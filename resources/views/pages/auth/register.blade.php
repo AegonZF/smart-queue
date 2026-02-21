@@ -1,7 +1,7 @@
 <x-layouts::auth>
     <div class="bg-[#0a1a29] p-10 rounded-[2.5rem] shadow-2xl flex flex-col gap-8 border border-white/5 w-full max-w-[400px] mx-auto">
         
-        <h2 class="text-center text-xl font-light text-white tracking-[0.2em] uppercase italic">
+        <h2 class="text-center text-xl font-light text-white tracking-[0.2em]">
             {{ __('Crear cuenta') }}
         </h2>
 
@@ -47,7 +47,7 @@
             </div>
 
             <button type="submit" 
-                class="w-full bg-[#005954] hover:bg-[#00706a] text-white font-bold py-4 rounded-full mt-4 transition-all shadow-lg active:scale-95 uppercase tracking-wider">
+                class="w-full bg-[#005954] hover:bg-[#00706a] text-white font-bold py-4 rounded-full mt-4 transition-all shadow-lg active:scale-95 tracking-wider">
                 {{ __('Registrar cuenta') }}
             </button>
         </form>
