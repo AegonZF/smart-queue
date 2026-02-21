@@ -1,0 +1,12 @@
+Actualiza la lista local
+    git fetch origin
+
+Ir a la rama
+    git checkout (nombre de la rama)
+
+Descargar los cambios
+    git pull origin main
+
+Regresar a tu diseño
+    git checkout feat/ui-recuperar-password
+
