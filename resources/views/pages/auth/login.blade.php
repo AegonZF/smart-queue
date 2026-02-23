@@ -7,6 +7,33 @@
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-5">
             @csrf
 
+            {{-- Mensaje de cuenta desbloqueada --}}
+            @if (session('status'))
+                <div class="bg-[#00705A]/20 border border-[#00705A]/40 rounded-lg py-2 px-4">
+                    <p class="text-[#4ade80] text-[11px] text-center font-medium">
+                        {{ session('status') }}
+                    </p>
+                </div>
+            @endif
+
+            {{-- Mensaje de cuenta bloqueada --}}
+            @if ($errors->has('blocked'))
+                <div class="bg-red-500/10 border border-red-500/30 rounded-lg py-2 px-4">
+                    <p class="text-red-400 text-[11px] text-center font-medium">
+                        {{ $errors->first('blocked') }}
+                    </p>
+                </div>
+            @endif
+
+            {{-- Mensaje de error por enlace inválido --}}
+            @if (session('error'))
+                <div class="bg-red-500/10 border border-red-500/30 rounded-lg py-2 px-4">
+                    <p class="text-red-400 text-[11px] text-center font-medium">
+                        {{ session('error') }}
+                    </p>
+                </div>
+            @endif
+
             {{-- Campo Correo --}}
             <div class="flex flex-col">
                 <input type="email" name="email" placeholder="Correo" required 
@@ -26,8 +53,8 @@
                 </div>
             </div>
 
-            {{-- Mensaje de error en español arriba del botón --}}
-            @if ($errors->any())
+            {{-- Mensaje de error credenciales incorrectas --}}
+            @if ($errors->has('email') || $errors->has('password'))
                 <p class="text-red-500 text-[10px] italic text-center -mb-2 tracking-wide">
                     Correo o contraseña incorrecta.
                 </p>
