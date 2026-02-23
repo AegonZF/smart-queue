@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AccountUnlockController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -9,6 +11,14 @@ Route::get('/', function () {
 
 Route::get('/account/unlock/{token}', [AccountUnlockController::class, 'unlock'])
     ->name('account.unlock');
+
+Route::post('/logout/inactivity', function (Request $request) {
+    Auth::guard('web')->logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    return redirect()->route('login')->with('inactivity', true);
+})->middleware('auth')->name('logout.inactivity');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])

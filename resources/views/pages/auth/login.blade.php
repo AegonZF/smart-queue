@@ -7,6 +7,15 @@
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-5">
             @csrf
 
+            {{-- Mensaje de sesión cerrada por inactividad --}}
+            @if (session('inactivity'))
+                <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg py-2 px-4">
+                    <p class="text-amber-400 text-[11px] text-center font-medium">
+                        Tu sesión fue cerrada por inactividad.
+                    </p>
+                </div>
+            @endif
+
             {{-- Mensaje de cuenta desbloqueada --}}
             @if (session('status'))
                 <div class="bg-[#00705A]/20 border border-[#00705A]/40 rounded-lg py-2 px-4">

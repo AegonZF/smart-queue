@@ -13,6 +13,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @include('partials.inactivity-timer')
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
