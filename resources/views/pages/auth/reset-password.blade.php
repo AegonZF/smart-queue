@@ -24,8 +24,8 @@
 
                 <form method="POST" action="{{ route('password.update') }}" class="flex flex-col">
                     @csrf
-                    <input type="hidden" name="token" value="{{ $request->route('token') ?? 'test-token' }}">
-                    <input type="hidden" name="email" value="{{ $request->email ?? 'test@correo.com' }}">
+                    <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                    <input type="hidden" name="email" value="{{ $request->email }}">
                     
                     {{-- Nueva Contraseña --}}
                     <div class="mb-5">
@@ -58,18 +58,9 @@
                         >
                     </div>
 
-                    {{-- ERROR DINÁMICO 2: Solo sale si las contraseñas no coinciden --}}
-                    <div class="mb-3">
-                        @if($errors->has('password_confirmation') || $errors->has('password'))
-                            <span class="font-['Roboto'] text-[#ef4444] text-[12px] block font-medium">
-                                Contraseñas no coinciden
-                            </span>
-                        @endif
-                    </div>
-
-                    {{-- Botón Enviar Código --}}
+                    {{-- Botón Restablecer --}}
                     <button type="submit" class="w-full bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-3 rounded-full transition duration-200 text-sm">
-                        Enviar código
+                        Restablecer contraseña
                     </button>
                 </form>
             </div>

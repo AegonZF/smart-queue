@@ -35,6 +35,7 @@
                             type="email" 
                             name="email"
                             placeholder="ejemplo@gmail.com"
+                            value="{{ session('status') ? '' : old('email') }}"
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-lg py-3 px-4 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
                             required
                             autofocus
@@ -43,6 +44,12 @@
                         @error('email')
                             <span class="text-[#ef4444] text-[12px] mt-2 block font-medium">Correo no registrado</span>
                         @enderror
+
+                        @if (session('status'))
+                            <span class="text-[#4ade80] text-[12px] mt-2 block font-medium text-center">
+                                Correo de recuperación enviado
+                            </span>
+                        @endif
                     </div>
 
                     <button type="submit" class="w-full bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1">

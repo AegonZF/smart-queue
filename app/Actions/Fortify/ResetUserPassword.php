@@ -20,6 +20,10 @@ class ResetUserPassword implements ResetsUserPasswords
     {
         Validator::make($input, [
             'password' => $this->passwordRules(),
+        ], [
+            'password.min' => 'La contraseña debe tener al menos 10 caracteres.',
+            'password.regex' => 'La contraseña debe contener letras y números (alfanumérica).',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
         ])->validate();
 
         $user->forceFill([

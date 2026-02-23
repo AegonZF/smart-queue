@@ -22,28 +22,20 @@
 
             {{-- 2. Contraseña --}}
             <div class="flex flex-col gap-1">
-                <input type="password" name="password" placeholder="Contraseña" required
+                <input type="password" name="password" placeholder="Contraseña (10+ caracteres, letras y números)" required
                     class="w-full bg-[#334155]/60 border-none rounded-full py-4 px-8 text-white placeholder-white focus:ring-2 focus:ring-white/30 transition-all outline-none text-sm">
                 
-                {{-- Solo muestra error de longitud aquí --}}
-                @if($errors->has('password') && !str_contains($errors->first('password'), 'confirm'))
+                @error('password')
                     <p class="text-red-500 text-[10px] italic text-center mt-1 tracking-wide">
-                        La contraseña debe tener al menos 8 caracteres.
+                        {{ $message }}
                     </p>
-                @endif
+                @enderror
             </div>
 
             {{-- 3. Confirmar Contraseña --}}
             <div class="flex flex-col gap-1">
                 <input type="password" name="password_confirmation" placeholder="Confirmar contraseña" required
                     class="w-full bg-[#334155]/60 border-none rounded-full py-4 px-8 text-white placeholder-white focus:ring-2 focus:ring-white/30 transition-all outline-none text-sm">
-                
-                {{-- Solo muestra el error si es específicamente por la confirmación --}}
-                @if($errors->has('password') && str_contains($errors->first('password'), 'confirm'))
-                    <p class="text-red-500 text-[10px] italic text-center mt-1 tracking-wide">
-                        Las contraseñas no coinciden.
-                    </p>
-                @endif
             </div>
 
             <button type="submit" 

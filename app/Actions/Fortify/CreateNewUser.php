@@ -20,12 +20,22 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            ...$this->profileRules(),
+            'email' => $this->emailRules(),
             'password' => $this->passwordRules(),
+        ], [
+            'password.min' => 'La contraseña debe tener al menos 10 caracteres.',
+            'password.regex' => 'La contraseña debe contener letras y números (alfanumérica).',
+            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'email.required' => 'El correo es obligatorio.',
+            'email.email' => 'Ingresa un correo válido.',
+            'email.unique' => 'Este correo ya está registrado.',
         ])->validate();
 
+        // Generar nombre a partir del email
+        $name = explode('@', $input['email'])[0];
+
         return User::create([
-            'name' => $input['name'],
+            'name' => $name,
             'email' => $input['email'],
             'password' => $input['password'],
         ]);
