@@ -1,85 +1,103 @@
 <x-layouts::auth>
-    <div class="bg-[#0a1a29] p-10 rounded-[2.5rem] shadow-2xl flex flex-col gap-8 border border-white/5 w-full max-w-[400px] mx-auto">
-        <h2 class="text-center text-xl font-light text-white tracking-[0.2em]">
-            Bienvenido
-        </h2>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Source+Sans+3:wght@400;500;600&display=swap');
+        
+        /* Ocultar el ojo nativo de Edge e Internet Explorer */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
+        /* Ocultar el ojo nativo de navegadores Webkit (Chrome, Safari, Edge moderno) */
+        input[type="password"]::-webkit-reveal,
+        input[type="password"]::-webkit-clear-button {
+            display: none !important;
+        }
+    </style>
 
-        <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-5">
-            @csrf
+    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#041C32] z-50 font-['Source_Sans_3']">
+        
+        {{-- LOGO: Ajustado a 220px para coincidir --}}
+        <div class="mb-10 text-center flex flex-col items-center">
+            <img 
+                src="{{ asset('images/Logo_1.svg') }}" 
+                alt="Logo NovaBank" 
+                class="w-[220px] h-auto object-contain"
+            >
+        </div>
 
-            {{-- Mensaje de sesión cerrada por inactividad --}}
-            @if (session('inactivity'))
-                <div class="bg-amber-500/10 border border-amber-500/30 rounded-lg py-2 px-4">
-                    <p class="text-amber-400 text-[11px] text-center font-medium">
-                        Tu sesión fue cerrada por inactividad.
-                    </p>
-                </div>
-            @endif
+        {{-- TARJETA PRINCIPAL --}}
+        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#061421] px-10 py-12 rounded-[1.5rem] shadow-2xl border border-white/5">
+            
+            <div class="w-full">
+                <h2 class="text-white text-center text-[1.15rem] font-normal mb-8 tracking-wide">
+                    Bienvenido
+                </h2>
 
-            {{-- Mensaje de cuenta desbloqueada --}}
-            @if (session('status'))
-                <div class="bg-[#00705A]/20 border border-[#00705A]/40 rounded-lg py-2 px-4">
-                    <p class="text-[#4ade80] text-[11px] text-center font-medium">
-                        {{ session('status') }}
-                    </p>
-                </div>
-            @endif
+                <form method="POST" action="{{ route('login.store') }}" class="flex flex-col">
+                    @csrf
 
-            {{-- Mensaje de cuenta bloqueada --}}
-            @if ($errors->has('blocked'))
-                <div class="bg-red-500/10 border border-red-500/30 rounded-lg py-2 px-4">
-                    <p class="text-red-400 text-[11px] text-center font-medium">
-                        {{ $errors->first('blocked') }}
-                    </p>
-                </div>
-            @endif
+                    {{-- Campo Correo --}}
+                    <div class="mb-5">
+                        <label class="block text-gray-300 text-[13px] mb-2" for="email">Correo electrónico</label>
+                        <input 
+                            id="email"
+                            type="email" 
+                            name="email" 
+                            placeholder="ejemplo@novabank.com" 
+                            required 
+                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
+                        >
+                    </div>
 
-            {{-- Mensaje de error por enlace inválido --}}
-            @if (session('error'))
-                <div class="bg-red-500/10 border border-red-500/30 rounded-lg py-2 px-4">
-                    <p class="text-red-400 text-[11px] text-center font-medium">
-                        {{ session('error') }}
-                    </p>
-                </div>
-            @endif
+                    {{-- Campo Contraseña (Con botón personalizado) --}}
+                    <div class="mb-2" x-data="{ show: false }">
+                        <label class="block text-gray-300 text-[13px] mb-2" for="password">Contraseña</label>
+                        <div class="relative w-full">
+                            <input 
+                                id="password"
+                                :type="show ? 'text' : 'password'" 
+                                name="password" 
+                                placeholder="••••••••" 
+                                required
+                                {{-- Se agregó pr-12 para que el texto no pise el icono --}}
+                                class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 pr-12 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
+                            >
+                            
+                            {{-- Botón Ojo Absoluto --}}
+                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-[#94A3B8] hover:text-white focus:outline-none">
+                                {{-- Icono Ojo --}}
+                                <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                                {{-- Icono Ojo Tachado --}}
+                                <svg x-show="show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="display: none;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
 
-            {{-- Campo Correo --}}
-            <div class="flex flex-col">
-                <input type="email" name="email" placeholder="Correo" required 
-                    value="{{ old('email') }}"
-                    class="w-full bg-[#334155]/60 border-none rounded-full py-4 px-8 text-white placeholder-white transition-all outline-none text-sm focus:ring-2 focus:ring-white/30">
+                    {{-- Link Recuperar --}}
+                    <div class="flex justify-end mb-10 pr-2 mt-1">
+                        <a href="{{ route('password.request') }}" class="text-[#94A3B8] text-[12px] hover:text-white transition-colors">
+                            Recuperar contraseña
+                        </a>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-3 rounded-full transition duration-200 text-sm active:scale-95">
+                        Iniciar sesión
+                    </button>
+                </form>
             </div>
 
-            {{-- Campo Contraseña --}}
-            <div class="flex flex-col">
-                <input type="password" name="password" placeholder="Contraseña" required
-                    class="w-full bg-[#334155]/60 border-none rounded-full py-4 px-8 text-white placeholder-white transition-all outline-none text-sm focus:ring-2 focus:ring-white/30">
-                
-                <div class="flex justify-end mt-2 pr-2">
-                    <a href="{{ route('password.request') }}" class="text-white text-[10px] font-normal hover:underline opacity-80 italic">
-                        Recuperar contraseña
-                    </a>
-                </div>
+            {{-- Enlace Inferior --}}
+            <div class="mt-auto text-center pt-6 flex justify-between items-center px-2">
+                <span class="text-[#94A3B8] text-[12px]">¿No tienes cuenta?</span>
+                <a href="{{ route('register') }}" class="text-white text-[12px] hover:underline transition-colors font-semibold">
+                    Registrar cuenta
+                </a>
             </div>
-
-            {{-- Mensaje de error credenciales incorrectas --}}
-            @if ($errors->has('email') || $errors->has('password'))
-                <p class="text-red-500 text-[10px] italic text-center -mb-2 tracking-wide">
-                    Correo o contraseña incorrecta.
-                </p>
-            @endif
-
-            <button type="submit" 
-                class="w-full bg-[#005954] hover:bg-[#00706a] text-white font-bold py-4 rounded-full mt-2 transition-all shadow-lg active:scale-95 tracking-wider">
-                Iniciar sesión
-            </button>
-        </form>
-
-        <div class="flex justify-between items-center text-[11px] mt-2 px-2">
-            <span class="text-white/70 font-medium italic">¿No tienes cuenta?</span>
-            <a href="{{ route('register') }}" class="text-white font-bold hover:underline transition-colors italic">
-                Registrar cuenta
-            </a>
         </div>
     </div>
 </x-layouts::auth>

@@ -24,4 +24,15 @@ Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+
+// vista temporal del administrador
+Route::get('/admin/preview', function () {
+    return view('admin.dashboard');
+});
+//vista temporal para alta empleados
+Route::get('/admin/registro-empleado', function () {
+    return view('admin.register-employee');
+});
+
+
 require __DIR__.'/settings.php';

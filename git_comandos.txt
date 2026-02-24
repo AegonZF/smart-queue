@@ -2,11 +2,14 @@ Actualiza la lista local
     git fetch origin
 
 Ir a la rama
-    git checkout (nombre de la rama)
+    git checkout feat/ui-recuperar-password
 
 Descargar los cambios
-    git pull origin main
-
+    git pull origin feat/ui-recuperar-password
+(Nota de supervivencia: Si al darle Enter la terminal se vuelve loca y te abre una pantalla rara con texto, es el editor de texto Vim pidiéndote confirmar la mezcla. Solo escribe :wq y dale Enter para salir de ahí).
 Regresar a tu diseño
     git checkout feat/ui-recuperar-password
 
+
+para entrar a la pantalla de nueva contra
+    ingresar a http://smart-queue.test/design-reset  ----> es solo la pantalla de prueba, se debe de eliminar la vista para que funcione correctamente
