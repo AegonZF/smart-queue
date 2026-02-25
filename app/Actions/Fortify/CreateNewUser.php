@@ -20,10 +20,13 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
             'email' => $this->emailRules(),
             'password' => $this->passwordRules(),
         ], [
-            'password.min' => 'La contraseña debe tener al menos 10 caracteres.',
+            'name.required' => 'El nombre es obligatorio.',
+            'password.min' => 'La contraseña debe tener entre 8 y 10 caracteres.',
+            'password.max' => 'La contraseña debe tener entre 8 y 10 caracteres.',
             'password.regex' => 'La contraseña debe contener letras y números (alfanumérica).',
             'password.confirmed' => 'Las contraseñas no coinciden.',
             'email.required' => 'El correo es obligatorio.',
@@ -31,11 +34,8 @@ class CreateNewUser implements CreatesNewUsers
             'email.unique' => 'Este correo ya está registrado.',
         ])->validate();
 
-        // Generar nombre a partir del email
-        $name = explode('@', $input['email'])[0];
-
         return User::create([
-            'name' => $name,
+            'name' => $input['name'],
             'email' => $input['email'],
             'password' => $input['password'],
         ]);

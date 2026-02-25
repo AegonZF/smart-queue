@@ -34,11 +34,7 @@
                             id="password"
                             type="password" 
                             name="password"
-                            placeholder="Al menos 10 caracteres"
-                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
-                        >
-                        
-                        {{-- ERROR DINÁMICO 1: Solo sale si la validación de 'password' falla --}}
+                            placeholder="Al menos 8 caracteres"}
                         @error('password')
                             <span class="font-['Roboto'] text-[#ef4444] text-[12px] mt-2 block font-medium">
                                 {{ $message }}
@@ -53,12 +49,7 @@
                             id="password_confirmation"
                             type="password" 
                             name="password_confirmation"
-                            placeholder="Al menos 10 caracteres"
-                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
-                        >
-                    </div>
-
-                    {{-- Botón Restablecer --}}
+                            placeholder="Al menos 8 caracteres"}
                     <button type="submit" class="w-full bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-3 rounded-full transition duration-200 text-sm">
                         Restablecer contraseña
                     </button>

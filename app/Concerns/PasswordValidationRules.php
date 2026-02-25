@@ -16,7 +16,8 @@ trait PasswordValidationRules
         return [
             'required',
             'string',
-            'min:10',
+            'min:8',
+            'max:10',
             'regex:/^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$/',
             'confirmed',
         ];

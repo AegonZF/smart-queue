@@ -78,6 +78,37 @@
                         </div>
                     </div>
 
+                    {{-- Mensajes de error --}}
+                    @if (session('inactivity'))
+                        <p class="text-amber-400 text-[12px] text-center mt-1 font-medium">
+                            Tu sesión se cerró por inactividad. Inicia sesión de nuevo.
+                        </p>
+                    @endif
+
+                    @if (session('account_unlocked'))
+                        <p class="text-emerald-400 text-[12px] text-center mt-1 font-medium">
+                            Tu cuenta ha sido desbloqueada. Ya puedes iniciar sesión.
+                        </p>
+                    @endif
+
+                    @error('blocked')
+                        <p class="text-[#ef4444] text-[12px] text-center mt-1 font-medium">
+                            {{ $message }}
+                        </p>
+                    @enderror
+
+                    @error('email')
+                        <p class="text-[#ef4444] text-[12px] text-center mt-1 font-medium">
+                            {{ $message }}
+                        </p>
+                    @enderror
+
+                    @if (session('invalidUnlockLink'))
+                        <p class="text-[#ef4444] text-[12px] text-center mt-1 font-medium">
+                            El enlace de desbloqueo no es válido o ya fue utilizado.
+                        </p>
+                    @endif
+
                     {{-- Link Recuperar --}}
                     <div class="flex justify-end mb-10 pr-2 mt-1">
                         <a href="{{ route('password.request') }}" class="text-[#94A3B8] text-[12px] hover:text-white transition-colors">

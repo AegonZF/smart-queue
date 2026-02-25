@@ -29,19 +29,32 @@
                 <h3 class="text-white !text-[1.2rem] font-normal tracking-wide mt-1">Empleado</h3>
             </div>
 
-            <form method="POST" action="#" class="flex flex-col gap-4">
+            <form method="POST" action="{{ route('admin.register-employee.store') }}" class="flex flex-col gap-4">
                 @csrf
+
+                {{-- Mensaje de éxito --}}
+                @if (session('success'))
+                    <p class="text-emerald-400 !text-[13px] text-center font-medium">
+                        {{ session('success') }}
+                    </p>
+                @endif
 
                 {{-- 1. Nombre Completo --}}
                 <div class="flex flex-col">
-                    <input type="text" name="name" placeholder="Nombre Completo" required
+                    <input type="text" name="name" placeholder="Nombre Completo" required value="{{ old('name') }}"
                         class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#00705A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
+                    @error('name')
+                        <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- 2. Correo --}}
                 <div class="flex flex-col">
-                    <input type="email" name="email" placeholder="Correo" required
+                    <input type="email" name="email" placeholder="Correo" required value="{{ old('email') }}"
                         class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#00705A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
+                    @error('email')
+                        <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- 3. Contraseña --}}
@@ -60,6 +73,9 @@
                             </svg>
                         </button>
                     </div>
+                    @if($errors->has('password') && !str_contains($errors->first('password'), 'coinciden'))
+                        <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $errors->first('password') }}</p>
+                    @endif
                 </div>
 
                 {{-- 4. Confirmar Contraseña --}}
@@ -78,6 +94,9 @@
                             </svg>
                         </button>
                     </div>
+                    @if($errors->has('password') && str_contains($errors->first('password'), 'coinciden'))
+                        <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $errors->first('password') }}</p>
+                    @endif
                 </div>
 
                 {{-- Botón Registrar --}}
@@ -86,7 +105,7 @@
                 </button>
 
                 {{-- Botón Regresar --}}
-                <a href="/admin/preview" class="w-1/2 mx-auto text-center bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-2 rounded-full mt-1 transition-all shadow-lg active:scale-95 !text-[15px]">
+                <a href="{{ route('admin.dashboard') }}" class="w-1/2 mx-auto text-center bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-2 rounded-full mt-1 transition-all shadow-lg active:scale-95 !text-[15px]">
                     Regresar
                 </a>
             </form>

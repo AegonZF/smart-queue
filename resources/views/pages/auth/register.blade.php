@@ -30,7 +30,19 @@
                 <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-5">
                     @csrf
 
-                    {{-- 1. Correo --}}
+                    {{-- 1. Nombre --}}
+                    <div class="flex flex-col">
+                        <input type="text" name="name" placeholder="Nombre completo" required value="{{ old('name') }}"
+                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 focus:ring-2 focus:ring-[#00705A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
+                        
+                        @error('name')
+                            <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    {{-- 2. Correo --}}
                     <div class="flex flex-col">
                         <input type="email" name="email" placeholder="Correo electrónico" required value="{{ old('email') }}"
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 focus:ring-2 focus:ring-[#00705A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
@@ -66,7 +78,7 @@
                         
                         @if($errors->has('password') && !str_contains($errors->first('password'), 'confirm'))
                             <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">
-                                Al menos 8 caracteres.
+                                {{ $errors->first('password') }}
                             </p>
                         @endif
                     </div>
