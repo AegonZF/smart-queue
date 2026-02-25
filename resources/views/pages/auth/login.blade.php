@@ -41,10 +41,9 @@
                         <label class="block text-gray-300 text-[13px] mb-2" for="email">Correo electrónico</label>
                         <input 
                             id="email"
-                            type="email" 
+                            type="text" 
                             name="email" 
                             placeholder="ejemplo@novabank.com" 
-                            required 
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
                         >
                     </div>
