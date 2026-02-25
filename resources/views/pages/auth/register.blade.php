@@ -1,4 +1,4 @@
-<x-layouts::auth>
+<x-layouts::auth.bare>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap');
         
@@ -14,16 +14,16 @@
         }
     </style>
 
-    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3']">
+    <div class="min-h-screen flex flex-col items-center justify-start sm:justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3'] overflow-y-auto py-6 sm:py-10">
         
-        <div class="mb-10 text-center flex flex-col items-center">
-            <img src="{{ asset('images/Logo_1.svg') }}" alt="Logo NovaBank" class="w-[220px] h-auto">
+        <div class="mb-6 sm:mb-10 text-center flex flex-col items-center">
+            <img src="{{ asset('images/Logo_1.svg') }}" alt="Logo NovaBank" class="w-[140px] sm:w-[180px] md:w-[220px] h-auto">
         </div>
 
-        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl border border-white/5">
+        <div class="w-full max-w-[90vw] sm:max-w-[440px] min-h-0 sm:min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-5 py-8 sm:px-10 sm:py-12 rounded-[1.5rem] shadow-2xl border border-white/5 mx-4">
             
             <div class="w-full">
-                <h2 class="text-white text-center !text-[1.5rem] font-semibold mb-8 tracking-wide">
+                <h2 class="text-white text-center !text-[1.2rem] sm:!text-[1.5rem] font-semibold mb-5 sm:mb-8 tracking-wide">
                     Crear cuenta
                 </h2>
 
@@ -122,4 +122,4 @@
             </div>
         </div>
     </div>
-</x-layouts::auth>
+</x-layouts::auth.bare>

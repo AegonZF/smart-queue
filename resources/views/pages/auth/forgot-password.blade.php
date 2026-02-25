@@ -1,27 +1,27 @@
-<x-layouts::auth>
+<x-layouts::auth.bare>
     {{-- Tipo grafia requerida para el diseño de la página de recuperación de contraseña. Se importan las fuentes 'Roboto' y 'Source Sans 3'  --}}
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Source+Sans+3:wght@400;500;600&display=swap');
     </style>
 
-    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3']">
+    <div class="min-h-screen flex flex-col items-center justify-start sm:justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3'] overflow-y-auto py-6 sm:py-10">
         
         {{-- SECCIÓN DEL LOGO ACTUALIZADA --}}
-        <div class="mb-10 text-center flex flex-col items-center">
+        <div class="mb-6 sm:mb-10 text-center flex flex-col items-center">
             {{-- Se ajustó a w-[220px] h-auto para logos horizontales estándar --}}
             <img 
                 src="{{ asset('images/Logo_1.svg') }}" 
                 alt="Logo NovaBank" 
-                class="w-[220px] h-auto object-contain"
+                class="w-[140px] sm:w-[180px] md:w-[220px] h-auto object-contain"
             >
         </div>
 
         {{-- TARJETA PRINCIPAL CON DIMENSIONES (revisalo erick)--}}
-        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl">
+        <div class="w-full max-w-[90vw] sm:max-w-[440px] min-h-0 sm:min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-5 py-8 sm:px-10 sm:py-12 rounded-[1.5rem] shadow-2xl mx-4">
             
             {{-- Grupo Superior: Título y Formulario --}}
             <div class="w-full">
-                <h2 class="font-['Roboto'] text-white text-center text-[1.15rem] font-normal mb-8 tracking-wide">
+                <h2 class="font-['Roboto'] text-white text-center text-base sm:text-[1.15rem] font-normal mb-5 sm:mb-8 tracking-wide">
                     Recuperar contraseña
                 </h2>
 
@@ -66,4 +66,4 @@
             </div>
         </div>
     </div>
-</x-layouts::auth>
+</x-layouts::auth.bare>
