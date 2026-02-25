@@ -13,7 +13,7 @@
         }
     </style>
 
-    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#041C32] z-50 font-['Source_Sans_3'] overflow-y-auto py-8">
+    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3'] overflow-y-auto py-8">
         
         {{-- LOGO --}}
         <div class="mb-6 text-center flex flex-col items-center shrink-0">
@@ -21,7 +21,7 @@
         </div>
 
         {{-- TARJETA PRINCIPAL --}}
-        <div class="w-full max-w-[440px] flex flex-col bg-[#061421] px-10 py-10 rounded-[1.5rem] shadow-2xl border border-white/5 shrink-0">
+        <div class="w-full max-w-[440px] flex flex-col bg-[#072b4e] px-10 py-10 rounded-[1.5rem] shadow-2xl border border-white/5 shrink-0">
             
             {{-- Títulos --}}
             <div class="w-full text-center mb-8">
@@ -42,7 +42,7 @@
                 {{-- 1. Nombre Completo --}}
                 <div class="flex flex-col">
                     <input type="text" name="name" placeholder="Nombre Completo" required value="{{ old('name') }}"
-                        class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#00705A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
+                        class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
                     @error('name')
                         <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $message }}</p>
                     @enderror
@@ -51,7 +51,7 @@
                 {{-- 2. Correo --}}
                 <div class="flex flex-col">
                     <input type="email" name="email" placeholder="Correo" required value="{{ old('email') }}"
-                        class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#00705A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
+                        class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
                     @error('email')
                         <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $message }}</p>
                     @enderror
@@ -61,7 +61,7 @@
                 <div class="flex flex-col" x-data="{ show: false }">
                     <div class="relative w-full">
                         <input :type="show ? 'text' : 'password'" name="password" placeholder="Contraseña" required
-                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 pr-12 focus:ring-2 focus:ring-[#00705A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
+                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 pr-12 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
                         
                         <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-[#94A3B8] hover:text-white focus:outline-none">
                             <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -82,7 +82,7 @@
                 <div class="flex flex-col" x-data="{ show: false }">
                     <div class="relative w-full">
                         <input :type="show ? 'text' : 'password'" name="password_confirmation" placeholder="Confirmar contraseña" required
-                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 pr-12 focus:ring-2 focus:ring-[#00705A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
+                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 pr-12 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
                         
                         <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-[#94A3B8] hover:text-white focus:outline-none">
                             <svg x-show="!show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -100,12 +100,12 @@
                 </div>
 
                 {{-- Botón Registrar --}}
-                <button type="submit" class="w-full bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-3 rounded-full mt-3 transition-all shadow-lg active:scale-95 !text-[16px]">
+                <button type="submit" class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-3 rounded-full mt-3 transition-all shadow-lg active:scale-95 !text-[16px]">
                     Registrar Empleado
                 </button>
 
                 {{-- Botón Regresar --}}
-                <a href="{{ route('admin.dashboard') }}" class="w-1/2 mx-auto text-center bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-2 rounded-full mt-1 transition-all shadow-lg active:scale-95 !text-[15px]">
+                <a href="{{ route('admin.dashboard') }}" class="w-1/2 mx-auto text-center bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-2 rounded-full mt-1 transition-all shadow-lg active:scale-95 !text-[15px]">
                     Regresar
                 </a>
             </form>

@@ -4,7 +4,7 @@ name('password.request');
 ?>
 
 <x-layouts::auth>
-    <div class="flex flex-col items-center justify-center min-h-full bg-[#082E52] fixed inset-0 z-50">
+    <div class="flex flex-col items-center justify-center min-h-full bg-[#0C4D8B] fixed inset-0 z-50">
         
         <div class="mb-8 text-center">
             <div class="flex justify-center mb-2">
@@ -13,7 +13,7 @@ name('password.request');
             <h1 class="text-2xl font-bold text-white tracking-tight font-['Roboto']">NovaBank</h1>
         </div>
 
-        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#061421] p-10 rounded-[1.5rem] shadow-2xl border border-white/5">
+        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] p-10 rounded-[1.5rem] shadow-2xl border border-white/5">
             
             <div class="w-full font-['Source_Sans_3']">
                 <h2 class="text-white text-center text-lg font-medium mb-8 font-['Roboto']">Recuperar contraseña</h2>

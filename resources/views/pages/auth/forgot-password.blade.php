@@ -4,7 +4,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Source+Sans+3:wght@400;500;600&display=swap');
     </style>
 
-    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#041C32] z-50 font-['Source_Sans_3']">
+    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3']">
         
         {{-- SECCIÓN DEL LOGO ACTUALIZADA --}}
         <div class="mb-10 text-center flex flex-col items-center">
@@ -17,7 +17,7 @@
         </div>
 
         {{-- TARJETA PRINCIPAL CON DIMENSIONES (revisalo erick)--}}
-        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#061421] px-10 py-12 rounded-[1.5rem] shadow-2xl">
+        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl">
             
             {{-- Grupo Superior: Título y Formulario --}}
             <div class="w-full">
@@ -36,7 +36,7 @@
                             name="email"
                             placeholder="ejemplo@gmail.com"
                             value="{{ session('status') ? '' : old('email') }}"
-                            class="w-full bg-[#3B4B5B] text-white border-none rounded-lg py-3 px-4 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
+                            class="w-full bg-[#3B4B5B] text-white border-none rounded-lg py-3 px-4 focus:ring-2 focus:ring-[#02B48A] placeholder-gray-400 outline-none text-sm transition-all"
                             required
                             autofocus
                         >
@@ -52,7 +52,7 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="w-full bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1">
+                    <button type="submit" class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1">
                         Enviar
                     </button>
                 </form>

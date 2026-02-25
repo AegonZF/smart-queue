@@ -14,7 +14,7 @@
         }
     </style>
 
-    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#041C32] z-50 font-['Source_Sans_3']">
+    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3']">
         
         {{-- LOGO: Ajustado a 220px para coincidir --}}
         <div class="mb-10 text-center flex flex-col items-center">
@@ -26,7 +26,7 @@
         </div>
 
         {{-- TARJETA PRINCIPAL --}}
-        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#061421] px-10 py-12 rounded-[1.5rem] shadow-2xl border border-white/5">
+        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl border border-white/5">
             
             <div class="w-full">
                 <h2 class="text-white text-center text-[1.15rem] font-normal mb-8 tracking-wide">
@@ -44,7 +44,7 @@
                             type="text" 
                             name="email" 
                             placeholder="ejemplo@novabank.com" 
-                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
+                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 focus:ring-2 focus:ring-[#02B48A] placeholder-gray-400 outline-none text-sm transition-all"
                         >
                     </div>
 
@@ -59,7 +59,7 @@
                                 placeholder="••••••••" 
                                 required
                                 {{-- Se agregó pr-12 para que el texto no pise el icono --}}
-                                class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 pr-12 focus:ring-2 focus:ring-[#00705A] placeholder-gray-400 outline-none text-sm transition-all"
+                                class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-4 pr-12 focus:ring-2 focus:ring-[#02B48A] placeholder-gray-400 outline-none text-sm transition-all"
                             >
                             
                             {{-- Botón Ojo Absoluto --}}
@@ -115,7 +115,7 @@
                         </a>
                     </div>
 
-                    <button type="submit" class="w-full bg-[#00705A] hover:bg-[#005B49] text-white font-medium py-3 rounded-full transition duration-200 text-sm active:scale-95">
+                    <button type="submit" class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-3 rounded-full transition duration-200 text-sm active:scale-95">
                         Iniciar sesión
                     </button>
                 </form>
