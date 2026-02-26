@@ -30,9 +30,12 @@
                 <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-5">
                     @csrf
 
+                    <p class="text-gray-400 text-[11px] text-center mb-1">Los campos marcados con <span class="text-[#ef4444]">*</span> son obligatorios</p>
+
                     {{-- 1. Nombre --}}
                     <div class="flex flex-col">
-                        <input type="text" name="name" placeholder="Nombre completo" required value="{{ old('name') }}"
+                        <label class="block text-gray-300 text-[13px] mb-2" for="name">Nombre completo <span class="text-[#ef4444]">*</span></label>
+                        <input id="name" type="text" name="name" placeholder="Nombre completo" required value="{{ old('name') }}"
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                         
                         @error('name')
@@ -44,7 +47,8 @@
 
                     {{-- 2. Correo --}}
                     <div class="flex flex-col">
-                        <input type="email" name="email" placeholder="Correo electrónico" required value="{{ old('email') }}"
+                        <label class="block text-gray-300 text-[13px] mb-2" for="email">Correo electrónico <span class="text-[#ef4444]">*</span></label>
+                        <input id="email" type="email" name="email" placeholder="Correo electrónico" required value="{{ old('email') }}"
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                         
                         @error('email')
@@ -57,9 +61,10 @@
                     {{-- 2. Contraseña (Con botón personalizado) --}}
                     {{-- Usamos x-data para manejar el estado de mostrar/ocultar con Alpine.js --}}
                     <div class="flex flex-col" x-data="{ show: false }">
+                        <label class="block text-gray-300 text-[13px] mb-2" for="password">Contraseña <span class="text-[#ef4444]">*</span></label>
                         <div class="relative w-full">
                             {{-- Cambiamos dinámicamente el tipo de input entre password y text --}}
-                            <input :type="show ? 'text' : 'password'" name="password" placeholder="Contraseña" required
+                            <input id="password" :type="show ? 'text' : 'password'" name="password" placeholder="8-10 caracteres, letras y números" required
                                 class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 pr-12 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                             
                             {{-- Botón Ojo Absoluto --}}
@@ -85,8 +90,9 @@
 
                     {{-- 3. Confirmar Contraseña (Con botón personalizado) --}}
                     <div class="flex flex-col" x-data="{ show: false }">
+                        <label class="block text-gray-300 text-[13px] mb-2" for="password_confirmation">Confirmar contraseña <span class="text-[#ef4444]">*</span></label>
                         <div class="relative w-full">
-                            <input :type="show ? 'text' : 'password'" name="password_confirmation" placeholder="Confirmar contraseña" required
+                            <input id="password_confirmation" :type="show ? 'text' : 'password'" name="password_confirmation" placeholder="8-10 caracteres, letras y números" required
                                 class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 pr-12 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                             
                             <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-[#94A3B8] hover:text-white focus:outline-none">

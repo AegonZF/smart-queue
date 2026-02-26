@@ -59,6 +59,17 @@ class FortifyServiceProvider extends ServiceProvider
                 return $user;
             }
 
+            // Contraseña incorrecta: calcular intentos restantes
+            // El listener HandleFailedLogin incrementará failed_login_attempts después,
+            // así que sumamos 1 al conteo actual para predecir el valor post-incremento.
+            $maxAttempts = 3;
+            $attemptsAfter = $user->failed_login_attempts + 1;
+            $remaining = $maxAttempts - $attemptsAfter;
+
+            if ($remaining > 0) {
+                session()->flash('remaining_attempts', $remaining);
+            }
+
             return null;
         });
     }

@@ -102,6 +102,12 @@
                         </p>
                     @enderror
 
+                    @if (session('remaining_attempts'))
+                        <p class="text-amber-400 text-[12px] text-center mt-1 font-medium">
+                            Te {{ session('remaining_attempts') == 1 ? 'queda' : 'quedan' }} <span class="font-bold">{{ session('remaining_attempts') }}</span> {{ session('remaining_attempts') == 1 ? 'intento' : 'intentos' }} antes de que tu cuenta sea bloqueada.
+                        </p>
+                    @endif
+
                     @if (session('invalidUnlockLink'))
                         <p class="text-[#ef4444] text-[12px] text-center mt-1 font-medium">
                             El enlace de desbloqueo no es válido o ya fue utilizado.

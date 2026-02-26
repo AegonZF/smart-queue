@@ -14,7 +14,7 @@ class AccountUnlockController extends Controller
             ->first();
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'El enlace de desbloqueo no es válido o ya fue utilizado.');
+            return redirect()->route('login')->with('invalidUnlockLink', true);
         }
 
         $user->update([
@@ -23,6 +23,6 @@ class AccountUnlockController extends Controller
             'unlock_token' => null,
         ]);
 
-        return redirect()->route('login')->with('status', 'Tu cuenta ha sido desbloqueada. Puedes iniciar sesión.');
+        return redirect()->route('login')->with('account_unlocked', true);
     }
 }

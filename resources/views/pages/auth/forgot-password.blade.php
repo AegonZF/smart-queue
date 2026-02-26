@@ -25,7 +25,25 @@
                     Recuperar contraseña
                 </h2>
 
-                <form method="POST" action="{{ route('password.email') }}" class="flex flex-col">
+                <form method="POST" action="{{ route('password.email') }}" class="flex flex-col"
+                    x-data="{
+                        seconds: {{ session('status') ? 30 : 0 }},
+                        counting: {{ session('status') ? 'true' : 'false' }},
+                        get disabled() { return this.counting && this.seconds > 0 },
+                        startCountdown() {
+                            this.counting = true;
+                            this.seconds = 30;
+                            let interval = setInterval(() => {
+                                this.seconds--;
+                                if (this.seconds <= 0) {
+                                    clearInterval(interval);
+                                    this.counting = false;
+                                }
+                            }, 1000);
+                        }
+                    }"
+                    x-init="if (counting) { startCountdown() }"
+                >
                     @csrf
                     
                     <div class="mb-6">
@@ -35,24 +53,51 @@
                             type="email" 
                             name="email"
                             placeholder="ejemplo@gmail.com"
-                            value="{{ session('status') ? '' : old('email') }}"
+                            value="{{ old('email') }}"
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-lg py-3 px-4 focus:ring-2 focus:ring-[#02B48A] placeholder-gray-400 outline-none text-sm transition-all"
                             required
                             autofocus
                         >
                         
                         @error('email')
-                            <span class="text-[#ef4444] text-[12px] mt-2 block font-medium">Correo no registrado</span>
+                            @if($message === __('passwords.throttled'))
+                                {{-- Si es throttle, iniciar contador automáticamente --}}
+                                <span class="text-amber-400 text-[12px] mt-2 block font-medium text-center"
+                                    x-init="startCountdown()"
+                                >
+                                    <span x-show="seconds > 0">
+                                        Por favor espera <span x-text="seconds" class="font-bold"></span>s antes de intentar de nuevo.
+                                    </span>
+                                    <span x-show="seconds <= 0" x-cloak class="text-[#4ade80]">
+                                        Ya puedes intentar de nuevo.
+                                    </span>
+                                </span>
+                            @else
+                                <span class="text-[#ef4444] text-[12px] mt-2 block font-medium">{{ $message }}</span>
+                            @endif
                         @enderror
 
                         @if (session('status'))
                             <span class="text-[#4ade80] text-[12px] mt-2 block font-medium text-center">
                                 Correo de recuperación enviado
                             </span>
+                            <span class="text-amber-400 text-[12px] mt-1 block font-medium text-center">
+                                <span x-show="seconds > 0">
+                                    Podrás reenviar en <span x-text="seconds" class="font-bold"></span>s
+                                </span>
+                                <span x-show="seconds <= 0" x-cloak class="text-[#4ade80]">
+                                    Ya puedes reenviar el correo.
+                                </span>
+                            </span>
                         @endif
                     </div>
 
-                    <button type="submit" class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1">
+                    <button 
+                        type="submit" 
+                        :disabled="disabled"
+                        :class="disabled ? 'bg-gray-500 cursor-not-allowed opacity-60' : 'bg-[#02B48A] hover:bg-[#029A73]'"
+                        class="w-full text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1"
+                    >
                         Enviar
                     </button>
                 </form>
