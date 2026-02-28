@@ -3,18 +3,17 @@ use function Laravel\Folio\{name};
 name('password.request');
 ?>
 
-<x-layouts::auth.bare>
-    <div class="min-h-screen flex flex-col items-center justify-start sm:justify-center bg-[#0C4D8B] z-50 overflow-y-auto py-6 sm:py-10">
+<x-layouts::auth>
+    <div class="flex flex-col items-center justify-center min-h-full bg-[#0C4D8B] fixed inset-0 z-50">
         
-        <div class="mb-6 sm:mb-10 text-center flex flex-col items-center">
-            <img 
-                src="{{ asset('images/Logo_1.svg') }}" 
-                alt="Logo NovaBank" 
-                class="w-[140px] sm:w-[180px] md:w-[220px] h-auto object-contain"
-            >
+        <div class="mb-8 text-center">
+            <div class="flex justify-center mb-2">
+                <x-flux::icon.banknotes class="w-12 h-12 text-[#02B48A]" />
+            </div>
+            <h1 class="text-2xl font-bold text-white tracking-tight font-['Roboto']">NovaBank</h1>
         </div>
 
-        <div class="w-full max-w-[90vw] sm:max-w-[440px] min-h-0 sm:min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-5 py-8 sm:px-10 sm:py-12 rounded-[1.5rem] shadow-2xl border border-white/5 mx-4">
+        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] p-10 rounded-[1.5rem] shadow-2xl border border-white/5">
             
             <div class="w-full font-['Source_Sans_3']">
                 <h2 class="text-white text-center text-lg font-medium mb-8 font-['Roboto']">Recuperar contraseña</h2>
@@ -47,4 +46,4 @@ name('password.request');
             </div>
         </div>
     </div>
-</x-layouts::auth.bare>
+</x-layouts::auth>

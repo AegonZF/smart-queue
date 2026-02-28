@@ -1,4 +1,4 @@
-<x-layouts::auth.bare>
+<x-layouts::auth>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&display=swap');
         
@@ -14,28 +14,25 @@
         }
     </style>
 
-    <div class="min-h-screen flex flex-col items-center justify-start sm:justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3'] overflow-y-auto py-6 sm:py-10">
+    <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3']">
         
-        <div class="mb-6 sm:mb-10 text-center flex flex-col items-center">
-            <img src="{{ asset('images/Logo_1.svg') }}" alt="Logo NovaBank" class="w-[140px] sm:w-[180px] md:w-[220px] h-auto">
+        <div class="mb-10 text-center flex flex-col items-center">
+            <img src="{{ asset('images/Logo_1.svg') }}" alt="Logo NovaBank" class="w-[220px] h-auto">
         </div>
 
-        <div class="w-full max-w-[90vw] sm:max-w-[440px] min-h-0 sm:min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-5 py-8 sm:px-10 sm:py-12 rounded-[1.5rem] shadow-2xl border border-white/5 mx-4">
+        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl border border-white/5">
             
             <div class="w-full">
-                <h2 class="text-white text-center !text-[1.2rem] sm:!text-[1.5rem] font-semibold mb-5 sm:mb-8 tracking-wide">
+                <h2 class="text-white text-center !text-[1.5rem] font-semibold mb-8 tracking-wide">
                     Crear cuenta
                 </h2>
 
                 <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-5">
                     @csrf
 
-                    <p class="text-gray-400 text-[11px] text-center mb-1">Los campos marcados con <span class="text-[#ef4444]">*</span> son obligatorios</p>
-
                     {{-- 1. Nombre --}}
                     <div class="flex flex-col">
-                        <label class="block text-gray-300 text-[13px] mb-2" for="name">Nombre completo <span class="text-[#ef4444]">*</span></label>
-                        <input id="name" type="text" name="name" placeholder="Nombre completo" required value="{{ old('name') }}"
+                        <input type="text" name="name" placeholder="Nombre completo" required value="{{ old('name') }}"
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                         
                         @error('name')
@@ -47,8 +44,7 @@
 
                     {{-- 2. Correo --}}
                     <div class="flex flex-col">
-                        <label class="block text-gray-300 text-[13px] mb-2" for="email">Correo electrónico <span class="text-[#ef4444]">*</span></label>
-                        <input id="email" type="email" name="email" placeholder="Correo electrónico" required value="{{ old('email') }}"
+                        <input type="email" name="email" placeholder="Correo electrónico" required value="{{ old('email') }}"
                             class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                         
                         @error('email')
@@ -61,10 +57,9 @@
                     {{-- 2. Contraseña (Con botón personalizado) --}}
                     {{-- Usamos x-data para manejar el estado de mostrar/ocultar con Alpine.js --}}
                     <div class="flex flex-col" x-data="{ show: false }">
-                        <label class="block text-gray-300 text-[13px] mb-2" for="password">Contraseña <span class="text-[#ef4444]">*</span></label>
                         <div class="relative w-full">
                             {{-- Cambiamos dinámicamente el tipo de input entre password y text --}}
-                            <input id="password" :type="show ? 'text' : 'password'" name="password" placeholder="8-10 caracteres, letras y números" required
+                            <input :type="show ? 'text' : 'password'" name="password" placeholder="Contraseña" required
                                 class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 pr-12 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                             
                             {{-- Botón Ojo Absoluto --}}
@@ -90,9 +85,8 @@
 
                     {{-- 3. Confirmar Contraseña (Con botón personalizado) --}}
                     <div class="flex flex-col" x-data="{ show: false }">
-                        <label class="block text-gray-300 text-[13px] mb-2" for="password_confirmation">Confirmar contraseña <span class="text-[#ef4444]">*</span></label>
                         <div class="relative w-full">
-                            <input id="password_confirmation" :type="show ? 'text' : 'password'" name="password_confirmation" placeholder="8-10 caracteres, letras y números" required
+                            <input :type="show ? 'text' : 'password'" name="password_confirmation" placeholder="Confirmar contraseña" required
                                 class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-3 px-6 pr-12 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[16px] placeholder:!text-[16px] transition-all">
                             
                             <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-4 flex items-center text-[#94A3B8] hover:text-white focus:outline-none">
@@ -128,4 +122,4 @@
             </div>
         </div>
     </div>
-</x-layouts::auth.bare>
+</x-layouts::auth>
