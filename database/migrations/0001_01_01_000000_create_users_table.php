@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+               $table->string('area_designada')->nullable(); // Nueva columna para área
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

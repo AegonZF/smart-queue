@@ -14,39 +14,82 @@
     </style>
 
     <div class="fixed inset-0 flex flex-col items-center justify-center bg-[#0C4D8B] z-50 font-['Source_Sans_3'] overflow-y-auto py-8">
-        
         {{-- LOGO --}}
         <div class="mb-6 text-center flex flex-col items-center shrink-0">
             <img src="{{ asset('images/Logo_1.svg') }}" alt="Logo NovaBank" class="w-[220px] h-auto object-contain">
         </div>
 
-        {{-- TARJETA PRINCIPAL --}}
-        <div class="w-full max-w-[440px] flex flex-col bg-[#072b4e] px-10 py-10 rounded-[1.5rem] shadow-2xl border border-white/5 shrink-0">
-            
-            {{-- Títulos --}}
-            <div class="w-full text-center mb-8">
-                <h2 class="text-white !text-[1.3rem] font-semibold tracking-wide">Crear cuenta</h2>
-                <h3 class="text-white !text-[1.2rem] font-normal tracking-wide mt-1">Empleado</h3>
+        <div class="w-full max-w-5xl flex flex-row gap-8">
+            {{-- Panel Crear Empleado --}}
+            <div class="w-full max-w-[440px] flex flex-col bg-[#072b4e] px-10 py-10 rounded-[1.5rem] shadow-2xl border border-white/5 shrink-0">
+                {{-- Títulos --}}
+                <div class="w-full text-center mb-8">
+                    <h2 class="text-white !text-[1.3rem] font-semibold tracking-wide">Crear cuenta</h2>
+                    <h3 class="text-white !text-[1.2rem] font-normal tracking-wide mt-1">Empleado</h3>
+                </div>
+                <form method="POST" action="{{ route('admin.register-employee.store') }}" class="flex flex-col gap-4">
+                    @csrf
+                    {{-- Mensaje de éxito --}}
+                    @if (session('success'))
+                        <p class="text-emerald-400 !text-[13px] text-center font-medium">
+                            {{ session('success') }}
+                        </p>
+                    @endif
+                    {{-- 1. Nombre Completo --}}
+                    <div class="flex flex-col">
+                        <input type="text" name="name" placeholder="Nombre Completo" required value="{{ old('name') }}"
+                            class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
+                        @error('name')
+                            <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    {{-- ...existing code... --}}
+                </form>
             </div>
 
-            <form method="POST" action="{{ route('admin.register-employee.store') }}" class="flex flex-col gap-4">
-                @csrf
-
-                {{-- Mensaje de éxito --}}
-                @if (session('success'))
-                    <p class="text-emerald-400 !text-[13px] text-center font-medium">
-                        {{ session('success') }}
-                    </p>
-                @endif
-
-                {{-- 1. Nombre Completo --}}
-                <div class="flex flex-col">
-                    <input type="text" name="name" placeholder="Nombre Completo" required value="{{ old('name') }}"
-                        class="w-full bg-[#3B4B5B] text-white border-none rounded-full py-2.5 px-6 focus:ring-2 focus:ring-[#02B48A] outline-none !text-[15px] placeholder:!text-[15px] transition-all">
-                    @error('name')
-                        <p class="text-[#ef4444] !text-[12px] text-center mt-2 font-medium">{{ $message }}</p>
-                    @enderror
+            {{-- Panel Lista Empleados --}}
+            <div class="w-full max-w-xl flex flex-col bg-[#072b4e] px-8 py-10 rounded-[1.5rem] shadow-2xl border border-white/5 shrink-0">
+                <div class="w-full text-center mb-8">
+                    <h2 class="text-white !text-[1.3rem] font-semibold tracking-wide">Lista Empleados</h2>
                 </div>
+                <table class="w-full text-white">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Nombre</th>
+                            <th>Área designada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($empleados ?? [] as $empleado)
+                        <tr>
+                            <td>
+                                <form method="POST" action="{{ route('admin.register-employee.destroy', $empleado->id) }}" onsubmit="return confirm('¿Eliminar empleado?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-500 hover:text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>{{ $empleado->name }}</td>
+                            <td>
+                                <form method="POST" action="{{ route('admin.register-employee.asignar-area', $empleado->id) }}">
+                                    @csrf
+                                    <select name="area_designada" class="bg-[#3B4B5B] text-white rounded-full px-4 py-2" onchange="this.form.submit()">
+                                        <option value="">Sin asignar</option>
+                                        @foreach($areas ?? [] as $area)
+                                            <option value="{{ $area }}" @if($empleado->area_designada == $area) selected @endif @if(($empleados ?? collect())->where('area_designada', $area)->count() > 0 && $empleado->area_designada != $area) disabled @endif>{{ $area }}</option>
+                                        @endforeach
+                                    </select>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
                 {{-- 2. Correo --}}
                 <div class="flex flex-col">
@@ -110,5 +153,6 @@
                 </a>
             </form>
         </div>
+        {{-- ...existing code... --}}
     </div>
 </x-layouts::auth>

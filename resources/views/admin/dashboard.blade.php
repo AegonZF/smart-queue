@@ -54,26 +54,77 @@
 
             {{-- Grid de Ventanillas --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[1000px] mb-12">
-                @for ($i = 1; $i <= 3; $i++)
-                    <div class="bg-[#02B48A] rounded-[1.5rem] p-8 flex flex-col items-center justify-center min-h-[170px] shadow-lg border border-white/5">
-                        <h2 class="font-bold text-[18px] mb-2 text-white">Ventanilla {{ $i }}</h2>
-                        <p class="text-[15px] mb-6 text-white/90">Operador:</p>
-                        <p class="text-[15px] text-white/90">Turnos totales:</p>
-                    </div>
-                @endfor
+                @if($ventanillas->count() > 0)
+                    @foreach($ventanillas as $ventanilla)
+                        <div class="bg-[#02B48A] rounded-[1.5rem] p-8 flex flex-col items-center justify-center min-h-[170px] shadow-lg border border-white/5">
+                            <h2 class="font-bold text-[18px] mb-2 text-white">{{ $ventanilla->label }}</h2>
+                            <p class="text-[15px] mb-6 text-white/90">Operador:
+                                @php
+                                    $operador = \App\Models\User::where('area_designada', $ventanilla->label)->first();
+                                @endphp
+                                <span class="font-bold">{{ $operador ? $operador->name : 'Sin asignar' }}</span>
+                            </p>
+                            <p class="text-[15px] text-white/90">Turnos totales:</p>
+                        </div>
+                    @endforeach
+                @else
+                    @for ($i = 1; $i <= 3; $i++)
+                        <div class="bg-[#02B48A] rounded-[1.5rem] p-8 flex flex-col items-center justify-center min-h-[170px] shadow-lg border border-white/5">
+                            <h2 class="font-bold text-[18px] mb-2 text-white">Ventanilla {{ $i }}</h2>
+                            <p class="text-[15px] mb-6 text-white/90">Operador:</p>
+                            <p class="text-[15px] text-white/90">Turnos totales:</p>
+                        </div>
+                    @endfor
+                @endif
+            </div>
+
+            {{-- Grid de Asesores --}}
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;" class="w-full max-w-[1000px] mb-12">
+                @if($asesores->count() > 0)
+                    @foreach($asesores as $asesor)
+                        <div class="bg-[#02B48A] rounded-[1.5rem] p-8 flex flex-col items-center justify-center min-h-[170px] shadow-lg border border-white/5">
+                            <h2 class="font-bold text-[18px] mb-2 text-white">{{ $asesor->label }}</h2>
+                            <p class="text-[15px] mb-6 text-white/90">Operador:
+                                @php
+                                    $operador = \App\Models\User::where('area_designada', $asesor->label)->first();
+                                @endphp
+                                <span class="font-bold">{{ $operador ? $operador->name : 'Sin asignar' }}</span>
+                            </p>
+                            <p class="text-[15px] text-white/90">Turnos totales:</p>
+                        </div>
+                    @endforeach
+                @else
+                    @for ($i = 1; $i <= 4; $i++)
+                        <div class="bg-[#02B48A] rounded-[1.5rem] p-8 flex flex-col items-center justify-center min-h-[170px] shadow-lg border border-white/5">
+                            <h2 class="font-bold text-[18px] mb-2 text-white">Asesor {{ $i }}</h2>
+                            <p class="text-[15px] mb-6 text-white/90">Operador:</p>
+                            <p class="text-[15px] text-white/90">Turnos totales:</p>
+                        </div>
+                    @endfor
+                @endif
             </div>
 
             {{-- Botones de Acción --}}
             <div class="flex flex-col md:flex-row gap-8 w-full max-w-[800px] justify-center mb-24">
                 
-                {{-- Botón Apagar --}}
-                <button class="bg-[#CC0000] hover:bg-[#A30000] text-white px-10 py-5 rounded-2xl font-bold text-[18px] transition-all active:scale-95 shadow-xl text-center leading-tight min-w-[280px]">
-                    Apagar Generación <br> de Turnos
-                </button>
+                {{-- Botón Encender/Apagar Generación de Turnos --}}
+                <form method="POST" action="{{ route('admin.turns.toggle') }}">
+                    @csrf
+                    @if($isActive)
+                        <button type="submit" class="bg-[#CC0000] hover:bg-[#A30000] text-white px-10 py-5 rounded-2xl font-bold text-[18px] transition-all active:scale-95 shadow-xl text-center leading-tight min-w-[280px]"
+                                onclick="return confirm('¿Estás seguro? Esto cancelará todos los turnos activos y reseteará los contadores.')">
+                            Apagar Generación <br> de Turnos
+                        </button>
+                    @else
+                            <button type="submit" class="bg-[#02B48A] hover:bg-[#029A73] text-white px-10 py-5 rounded-2xl font-bold text-[18px] transition-all active:scale-95 shadow-xl flex items-center justify-center min-w-[280px] text-center">
+                            Encender Generación <br> de Turnos
+                        </button>
+                    @endif
+                </form>
                 
-                {{-- Botón Dar Alta (Actualizado a la nueva ruta de registro de empleados) --}}
+                {{-- Botón Dar Alta --}}
                 <a href="/admin/registro-empleado" class="bg-[#02B48A] hover:bg-[#029A73] text-white px-10 py-5 rounded-2xl font-bold text-[18px] transition-all active:scale-95 shadow-xl flex items-center justify-center min-w-[280px] text-center">
-                    Dar Alta Empleados
+                    Gestionar <br> Empleados
                 </a>
             </div>
 

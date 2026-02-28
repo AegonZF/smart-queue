@@ -38,9 +38,47 @@ class RegisterEmployeeController extends Controller
             'email' => $request->email,
             'password' => $request->password,
             'role' => 'operador',
+            'area_designada' => null,
         ]);
 
         return redirect()->route('admin.register-employee')
             ->with('success', 'Empleado registrado exitosamente.');
     }
+
+        // Listar empleados y áreas disponibles
+        public function index()
+        {
+            $empleados = User::where('role', 'operador')->get();
+            $areas = [
+                'Ventanilla A',
+                'Ventanilla B',
+                'Ventanilla C',
+                'Asesor 1',
+                'Asesor 2',
+                'Asesor 3',
+            ];
+            return view('admin.register-employee', compact('empleados', 'areas'));
+        }
+
+        // Eliminar empleado
+        public function destroy($id)
+        {
+            $user = User::findOrFail($id);
+            $user->delete();
+            return redirect()->route('admin.register-employee')->with('success', 'Empleado eliminado.');
+        }
+
+        // Asignar área a empleado
+        public function asignarArea(Request $request, $id)
+        {
+            $area = $request->input('area_designada');
+            // Validar que el área no esté ocupada
+            if (User::where('area_designada', $area)->exists()) {
+                return redirect()->back()->with('error', 'El área ya está asignada a otro empleado.');
+            }
+            $user = User::findOrFail($id);
+            $user->area_designada = $area;
+            $user->save();
+            return redirect()->route('admin.register-employee')->with('success', 'Área asignada correctamente.');
+        }
 }

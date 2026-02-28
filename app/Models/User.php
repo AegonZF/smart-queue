@@ -27,6 +27,7 @@ class User extends Authenticatable
         'failed_login_attempts',
         'is_blocked',
         'unlock_token',
+        'area_designada', // Permitir asignación masiva
     ];
 
     /**

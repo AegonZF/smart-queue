@@ -22,19 +22,36 @@
                 Trámite en Ventanilla
             </h1>
 
-            <div class="flex flex-col md:flex-row gap-8 w-full max-w-4xl justify-center mb-10">
-                {{-- Botones de Trámite --}}
-                <button class="bg-[#02B48A] hover:bg-[#029672] transition-all duration-200 rounded-[2rem] p-6 w-full md:w-64 h-44 flex items-center justify-center text-center shadow-lg hover:scale-105 active:scale-95 border border-white/5">
-                    <span class="text-xl font-bold leading-tight text-white">
-                        Pago o <br> Depósito
-                    </span>
-                </button>
+            @if(session('error'))
+                <div class="bg-red-500/20 border border-red-400 text-red-100 px-6 py-3 rounded-xl mb-6 max-w-2xl w-full text-center">
+                    {{ session('error') }}
+                </div>
+            @endif
 
-                <button class="bg-[#02B48A] hover:bg-[#029672] transition-all duration-200 rounded-[2rem] p-6 w-full md:w-64 h-44 flex items-center justify-center text-center shadow-lg hover:scale-105 active:scale-95 border border-white/5">
-                    <span class="text-xl font-bold leading-tight text-white">
-                        Problema <br> con Banca
-                    </span>
-                </button>
+            <div class="flex flex-col md:flex-row gap-8 w-full max-w-4xl justify-center mb-10">
+                {{-- Botón: Pago o Depósito --}}
+                <form method="POST" action="{{ route('nova.turno.store') }}">
+                    @csrf
+                    <input type="hidden" name="service_type" value="ventanilla">
+                    <input type="hidden" name="tramite" value="pago_deposito">
+                    <button type="submit" class="bg-[#02B48A] hover:bg-[#029672] transition-all duration-200 rounded-[2rem] p-6 w-full md:w-64 h-44 flex items-center justify-center text-center shadow-lg hover:scale-105 active:scale-95 border border-white/5">
+                        <span class="text-xl font-bold leading-tight text-white">
+                            Pago o <br> Depósito
+                        </span>
+                    </button>
+                </form>
+
+                {{-- Botón: Problema con Banca --}}
+                <form method="POST" action="{{ route('nova.turno.store') }}">
+                    @csrf
+                    <input type="hidden" name="service_type" value="ventanilla">
+                    <input type="hidden" name="tramite" value="problema_banca">
+                    <button type="submit" class="bg-[#02B48A] hover:bg-[#029672] transition-all duration-200 rounded-[2rem] p-6 w-full md:w-64 h-44 flex items-center justify-center text-center shadow-lg hover:scale-105 active:scale-95 border border-white/5">
+                        <span class="text-xl font-bold leading-tight text-white">
+                            Problema <br> con Banca
+                        </span>
+                    </button>
+                </form>
             </div>
 
             {{-- Botón Regresar --}}

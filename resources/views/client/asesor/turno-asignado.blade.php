@@ -22,23 +22,26 @@
             <div class="flex flex-col md:flex-row justify-between w-full max-w-5xl mb-24 gap-8">
                 <div class="text-center md:text-left">
                     <h2 class="text-2xl md:text-3xl font-bold tracking-[0.1em] uppercase">
-                        VENTANILLA ASIGNADA: <span class="font-normal text-blue-200">1</span>
+                        ASESOR ASIGNADO: <span class="font-normal text-blue-200">{{ $turn->serviceCounter->label }}</span>
                     </h2>
                 </div>
                 <div class="text-center md:text-right">
                     <h2 class="text-2xl md:text-3xl font-bold tracking-[0.1em] uppercase">
-                        TURNO GENERADO: <span class="font-normal text-blue-200">0001</span>
+                        TURNO GENERADO: <span class="font-normal text-blue-200">{{ $turn->turn_number }}</span>
                     </h2>
                 </div>
             </div>
 
             <div class="flex justify-center mb-20">
                 {{-- Botón Cancelar: Rojo con el estilo Figma --}}
-                <button class="bg-[#d3111b] hover:bg-[#b00e16] transition-all duration-200 rounded-[2.5rem] p-8 w-72 h-44 flex items-center justify-center text-center shadow-2xl hover:scale-105 active:scale-95 border border-white/10 group">
-                    <span class="text-2xl font-bold leading-tight text-white group-hover:scale-110 transition-transform">
-                        Cancelar <br> Turno
-                    </span>
-                </button>
+                <form method="POST" action="{{ route('nova.turno.cancel') }}">
+                    @csrf
+                    <button type="submit" class="bg-[#d3111b] hover:bg-[#b00e16] transition-all duration-200 rounded-[2.5rem] p-8 w-72 h-44 flex items-center justify-center text-center shadow-2xl hover:scale-105 active:scale-95 border border-white/10 group">
+                        <span class="text-2xl font-bold leading-tight text-white group-hover:scale-110 transition-transform">
+                            Cancelar <br> Turno
+                        </span>
+                    </button>
+                </form>
             </div>
 
         </main>
