@@ -13,3 +13,12 @@ Regresar a tu diseño
 
 para entrar a la pantalla de nueva contra
     ingresar a http://smart-queue.test/design-reset  ----> es solo la pantalla de prueba, se debe de eliminar la vista para que funcione correctamente
+
+
+
+
+
+
+Cuenta de prueba:
+prueba@tec.com
+gestion8sc

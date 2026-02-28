@@ -45,6 +45,33 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::post('/registro-empleado', [RegisterEmployeeController::class, 'store'])
         ->name('admin.register-employee.store');
 });
+//RUTAS TEMPORALES, Hay que eliminarlas despues
+// --- FLUJO DE NOVABANK (CLIENTES) ---
+Route::prefix('nova')->group(function () {
+    
+    // 1. Pantalla principal: Selección de trámite
+    Route::view('/', 'client.index')->name('nova.index');
 
+    // Sub-flujo: Ventanilla
+    Route::prefix('ventanilla')->group(function () {
+        Route::view('/tramite', 'client.ventanilla.tramite-ventanilla')->name('nova.ventanilla.tramite');
+        Route::view('/generar', 'client.ventanilla.generar-turno')->name('nova.ventanilla.generar');
+        Route::view('/asignado', 'client.ventanilla.turno-asignado')->name('nova.ventanilla.asignado');
+    });
 
+    // Sub-flujo: Asesor (Cliente esperando)
+    Route::prefix('asesor-cliente')->group(function () {
+        Route::view('/generar', 'client.asesor.generar-turno')->name('nova.asesor.generar');
+        Route::view('/asignado', 'client.asesor.turno-asignado')->name('nova.asesor.asignado');
+    });
+});
+
+// --- FLUJO DEL TRABAJADOR (ASESOR) ---
+// Le puse middleware 'auth' para que solo los empleados logueados entren aquí
+Route::middleware(['auth'])->group(function () {
+    Route::view('/gestion-turnos', 'advisor.index')->name('advisor.dashboard');
+});
+Route::get('/advisor', function () {
+    return view('advisor.index');
+});
 require __DIR__.'/settings.php';
