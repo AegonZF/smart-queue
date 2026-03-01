@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 class CreateAdminUser extends Command
 {
     protected $signature = 'admin:create';
+
     protected $description = 'Crear o actualizar la cuenta de administrador desde las variables de entorno';
 
     public function handle(): int
@@ -15,8 +16,9 @@ class CreateAdminUser extends Command
         $email = env('ADMIN_EMAIL');
         $password = env('ADMIN_PASSWORD');
 
-        if (!$email || !$password) {
+        if (! $email || ! $password) {
             $this->error('Faltan las variables ADMIN_EMAIL y/o ADMIN_PASSWORD en el archivo .env');
+
             return self::FAILURE;
         }
 
@@ -33,6 +35,7 @@ class CreateAdminUser extends Command
         );
 
         $this->info("Cuenta de administrador configurada: {$email}");
+
         return self::SUCCESS;
     }
 }

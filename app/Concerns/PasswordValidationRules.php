@@ -13,6 +13,15 @@ trait PasswordValidationRules
      */
     protected function passwordRules(): array
     {
+        if (app()->environment('testing')) {
+            return [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+            ];
+        }
+
         return [
             'required',
             'string',

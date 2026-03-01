@@ -10,6 +10,37 @@ use Illuminate\Support\Facades\DB;
 class AdvisorTurnController extends Controller
 {
     /**
+     * Devuelve el estado actual de la cola (para refresco del operador).
+     */
+    public function status(Request $request)
+    {
+        $nextTurn = Turn::where('status', 'waiting')
+            ->orderBy('created_at', 'asc')
+            ->with('serviceCounter')
+            ->first();
+
+        $waitingCount = Turn::where('status', 'waiting')->count();
+
+        if (! $nextTurn) {
+            return response()->json([
+                'has_next' => false,
+                'waiting_count' => 0,
+                'user_area' => optional(auth()->user()->fresh())->area_designada,
+            ]);
+        }
+
+        return response()->json([
+            'has_next' => true,
+            'waiting_count' => $waitingCount,
+            'turn_number' => $nextTurn->turn_number,
+            'counter_label' => optional($nextTurn->serviceCounter)->label,
+            'tramite' => $nextTurn->tramite,
+            'created_at' => optional($nextTurn->created_at)?->toIso8601String(),
+            'user_area' => optional(auth()->user()->fresh())->area_designada,
+        ]);
+    }
+
+    /**
      * Completa el turno actual (Siguiente Turno).
      */
     public function next(Request $request)
@@ -29,7 +60,7 @@ class AdvisorTurnController extends Controller
             }
         });
 
-        return back()->with('success', 'Turno ' . $turn->turn_number . ' completado.');
+        return back()->with('success', 'Turno '.$turn->turn_number.' completado.');
     }
 
     /**
@@ -52,7 +83,7 @@ class AdvisorTurnController extends Controller
             }
         });
 
-        return back()->with('success', 'Turno ' . $turn->turn_number . ' marcado como expirado.');
+        return back()->with('success', 'Turno '.$turn->turn_number.' marcado como expirado.');
     }
 
     /**

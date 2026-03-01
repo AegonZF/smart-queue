@@ -13,7 +13,7 @@ class HandleFailedLogin
     {
         $user = User::where('email', $event->credentials['email'] ?? '')->first();
 
-        if (!$user || $user->is_blocked || $user->isAdmin()) {
+        if (! $user || $user->is_blocked || $user->isAdmin()) {
             return;
         }
 

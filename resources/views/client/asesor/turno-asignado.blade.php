@@ -34,8 +34,7 @@
 
             <div class="flex justify-center mb-20">
                 {{-- Botón Cancelar: Rojo con el estilo Figma --}}
-                <form method="POST" action="{{ route('nova.turno.cancel') }}">
-                    @csrf
+                <form method="GET" action="{{ route('nova.turno.cancel') }}">
                     <button type="submit" class="bg-[#d3111b] hover:bg-[#b00e16] transition-all duration-200 rounded-[2.5rem] p-8 w-72 h-44 flex items-center justify-center text-center shadow-2xl hover:scale-105 active:scale-95 border border-white/10 group">
                         <span class="text-2xl font-bold leading-tight text-white group-hover:scale-110 transition-transform">
                             Cancelar <br> Turno
@@ -46,4 +45,22 @@
 
         </main>
     </div>
+    <script>
+        setInterval(() => {
+            fetch('{{ route('nova.turno.active') }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(r => r.json())
+                .then(d => {
+                    if (!d.has_turn) {
+                        const q = d.last_status === 'expired' ? 'expired=1' : (d.last_status === 'cancelled' ? 'cancelled=1' : '');
+                        window.location.href = '{{ route('nova.index') }}' + (q ? ('?' + q) : '');
+                        return;
+                    }
+                    if (d.status === 'expired' || d.status === 'cancelled') {
+                        const q = d.status === 'expired' ? 'expired=1' : 'cancelled=1';
+                        window.location.href = '{{ route('nova.index') }}?' + q;
+                    }
+                })
+                .catch(() => {});
+        }, 3000);
+    </script>
 </x-nova>

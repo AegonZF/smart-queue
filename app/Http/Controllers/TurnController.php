@@ -102,10 +102,18 @@ class TurnController extends Controller
      */
     public function activeTurn(Request $request)
     {
-        $turn = Turn::getUserActiveTurn($request->user()->id);
+        $userId = $request->user()->id;
+        $turn = Turn::getUserActiveTurn($userId);
 
         if (! $turn) {
-            return response()->json(['has_turn' => false]);
+            $last = Turn::where('user_id', $userId)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            return response()->json([
+                'has_turn' => false,
+                'last_status' => $last?->status,
+            ]);
         }
 
         return response()->json([

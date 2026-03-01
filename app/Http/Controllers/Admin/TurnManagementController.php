@@ -55,7 +55,7 @@ class TurnManagementController extends Controller
             ServiceCounter::firstOrCreate(
                 ['type' => 'ventanilla', 'identifier' => $id],
                 [
-                    'label' => 'Ventanilla ' . $id,
+                    'label' => 'Ventanilla '.$id,
                     'current_turn' => 0,
                     'active_clients' => 0,
                 ]
@@ -66,7 +66,7 @@ class TurnManagementController extends Controller
             ServiceCounter::firstOrCreate(
                 ['type' => 'asesor', 'identifier' => (string) $i],
                 [
-                    'label' => 'Asesor ' . $i,
+                    'label' => 'Asesor '.$i,
                     'current_turn' => 0,
                     'active_clients' => 0,
                 ]

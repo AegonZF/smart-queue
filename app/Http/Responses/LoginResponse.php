@@ -16,7 +16,7 @@ class LoginResponse implements LoginResponseContract
         } elseif ($user->isOperador()) {
             $home = '/gestion-turnos';
         } else {
-            $home = '/nova';
+            $home = '/dashboard';
         }
 
         return $request->wantsJson()

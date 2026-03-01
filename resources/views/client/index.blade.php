@@ -29,6 +29,17 @@
                 </div>
             @endif
 
+            @if(request()->boolean('expired'))
+                <div class="bg-red-500/20 border border-red-400 text-red-100 px-6 py-3 rounded-xl mb-6 max-w-2xl w-full text-center">
+                    Tu turno ha expirado.
+                </div>
+            @endif
+            @if(request()->boolean('cancelled'))
+                <div class="bg-amber-500/20 border border-amber-400 text-amber-100 px-6 py-3 rounded-xl mb-6 max-w-2xl w-full text-center">
+                    Tu turno ha sido cancelado.
+                </div>
+            @endif
+
             {{-- Si el usuario ya tiene un turno activo, mostrar info --}}
             @php
                 $activeTurn = \App\Models\Turn::getUserActiveTurn(auth()->id());
@@ -44,8 +55,7 @@
                     <p class="text-6xl font-bold mb-4 text-[#02B48A]">{{ $activeTurn->turn_number }}</p>
                     <p class="text-lg text-white/70 mb-8">Estado: <span class="font-bold text-white">{{ $activeTurn->status === 'waiting' ? 'En espera' : 'En atención' }}</span></p>
                     
-                    <form method="POST" action="{{ route('nova.turno.cancel') }}">
-                        @csrf
+                    <form method="GET" action="{{ route('nova.turno.cancel') }}">
                         <button type="submit" class="bg-[#d3111b] hover:bg-[#b00e16] transition-all duration-200 rounded-[2rem] px-10 py-5 text-xl font-bold text-white shadow-xl hover:scale-105 active:scale-95">
                             Cancelar Turno
                         </button>

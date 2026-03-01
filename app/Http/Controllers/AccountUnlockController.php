@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class AccountUnlockController extends Controller
 {
@@ -13,7 +12,7 @@ class AccountUnlockController extends Controller
             ->where('is_blocked', true)
             ->first();
 
-        if (!$user) {
+        if (! $user) {
             return redirect()->route('login')->with('invalidUnlockLink', true);
         }
 
