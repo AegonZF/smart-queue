@@ -82,7 +82,13 @@ Route::middleware(['auth'])->prefix('nova')->group(function () {
                 return redirect()->route('nova.index')->with('error', 'No tienes un turno activo.');
             }
 
-            return view('client.ventanilla.turno-asignado', compact('turn'));
+            $ahead = \App\Models\Turn::where('status', 'waiting')
+                ->where('service_counter_id', $turn->service_counter_id)
+                ->where('created_at', '<', $turn->created_at)
+                ->count();
+            $etaSeconds = $ahead * 10 * 60;
+
+            return view('client.ventanilla.turno-asignado', compact('turn', 'etaSeconds'));
         })->name('nova.ventanilla.asignado');
     });
 
@@ -95,7 +101,13 @@ Route::middleware(['auth'])->prefix('nova')->group(function () {
                 return redirect()->route('nova.index')->with('error', 'No tienes un turno activo.');
             }
 
-            return view('client.asesor.turno-asignado', compact('turn'));
+            $ahead = \App\Models\Turn::where('status', 'waiting')
+                ->where('service_counter_id', $turn->service_counter_id)
+                ->where('created_at', '<', $turn->created_at)
+                ->count();
+            $etaSeconds = $ahead * 10 * 60;
+
+            return view('client.asesor.turno-asignado', compact('turn', 'etaSeconds'));
         })->name('nova.asesor.asignado');
     });
 

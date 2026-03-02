@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ServiceCounter;
 use App\Models\SystemSetting;
 use App\Models\Turn;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -35,8 +36,15 @@ class TurnController extends Controller
         $serviceType = $request->input('service_type');
         $tramite = $request->input('tramite');
 
-        // Buscar la ventanilla/asesor con menos carga
-        $counter = ServiceCounter::leastLoaded($serviceType);
+        // Buscar la ventanilla/asesor con menos carga, SOLO de counters activos con operador asignado
+        $activeLabels = User::where('role', 'operador')
+            ->whereNotNull('area_designada')
+            ->pluck('area_designada');
+
+        $counter = ServiceCounter::where('type', $serviceType)
+            ->whereIn('label', $activeLabels)
+            ->orderBy('active_clients', 'asc')
+            ->first();
 
         if (! $counter) {
             return back()->with('error', 'No hay ventanillas/asesores disponibles en este momento.');
@@ -95,6 +103,7 @@ class TurnController extends Controller
         });
 
         return redirect()->route('nova.index')->with('success', 'Tu turno ha sido cancelado.');
+
     }
 
     /**
@@ -116,12 +125,20 @@ class TurnController extends Controller
             ]);
         }
 
+        $ahead = Turn::where('status', 'waiting')
+            ->where('service_counter_id', $turn->service_counter_id)
+            ->where('created_at', '<', $turn->created_at)
+            ->count();
+        $etaSeconds = $ahead * 10 * 60;
+
         return response()->json([
             'has_turn' => true,
             'turn_number' => $turn->turn_number,
             'counter_label' => $turn->serviceCounter->label,
             'status' => $turn->status,
             'service_type' => $turn->service_type,
+            'created_at' => optional($turn->created_at)?->toIso8601String(),
+            'eta_seconds' => $etaSeconds,
         ]);
     }
 }

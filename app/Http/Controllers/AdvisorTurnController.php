@@ -10,22 +10,47 @@ use Illuminate\Support\Facades\DB;
 class AdvisorTurnController extends Controller
 {
     /**
+     * Resuelve el counter asignado al operador autenticado.
+     */
+    private function getAssignedCounter(): ?ServiceCounter
+    {
+        $label = optional(auth()->user())->area_designada;
+        if (! $label) {
+            return null;
+        }
+
+        return ServiceCounter::where('label', $label)->first();
+    }
+
+    /**
      * Devuelve el estado actual de la cola (para refresco del operador).
      */
     public function status(Request $request)
     {
-        $nextTurn = Turn::where('status', 'waiting')
-            ->orderBy('created_at', 'asc')
-            ->with('serviceCounter')
-            ->first();
+        $counter = $this->getAssignedCounter();
 
-        $waitingCount = Turn::where('status', 'waiting')->count();
+        $nextTurn = null;
+        $waitingCount = 0;
+
+        if ($counter) {
+            $nextTurn = Turn::where('status', 'waiting')
+                ->where('service_counter_id', $counter->id)
+                ->orderBy('created_at', 'asc')
+                ->with('serviceCounter')
+                ->first();
+
+            $waitingCount = Turn::where('status', 'waiting')
+                ->where('service_counter_id', $counter->id)
+                ->count();
+        }
+
+        $userArea = optional(auth()->user()->fresh())->area_designada;
 
         if (! $nextTurn) {
             return response()->json([
                 'has_next' => false,
-                'waiting_count' => 0,
-                'user_area' => optional(auth()->user()->fresh())->area_designada,
+                'waiting_count' => $waitingCount,
+                'user_area' => $userArea,
             ]);
         }
 
@@ -36,7 +61,7 @@ class AdvisorTurnController extends Controller
             'counter_label' => optional($nextTurn->serviceCounter)->label,
             'tramite' => $nextTurn->tramite,
             'created_at' => optional($nextTurn->created_at)?->toIso8601String(),
-            'user_area' => optional(auth()->user()->fresh())->area_designada,
+            'user_area' => $userArea,
         ]);
     }
 
@@ -91,7 +116,13 @@ class AdvisorTurnController extends Controller
      */
     private function getCurrentTurn(): ?Turn
     {
+        $counter = $this->getAssignedCounter();
+        if (! $counter) {
+            return null;
+        }
+
         return Turn::where('status', 'waiting')
+            ->where('service_counter_id', $counter->id)
             ->orderBy('created_at', 'asc')
             ->first();
     }

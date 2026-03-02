@@ -32,6 +32,12 @@
                 </div>
             </div>
 
+            <div class="text-center mb-6">
+                <p class="text-lg font-semibold tracking-wide">
+                    Tiempo estimado de espera: <span id="etaDisplay" class="font-bold text-blue-200">{{ gmdate('i:s', $etaSeconds ?? 0) }}</span>
+                </p>
+            </div>
+
             <div class="flex justify-center mb-20">
                 {{-- Botón Cancelar (Rojo) --}}
                 <form method="GET" action="{{ route('nova.turno.cancel') }}">
@@ -58,6 +64,17 @@
                     if (d.status === 'expired' || d.status === 'cancelled') {
                         const q = d.status === 'expired' ? 'expired=1' : 'cancelled=1';
                         window.location.href = '{{ route('nova.index') }}?' + q;
+                    }
+                    if (d.eta_seconds !== undefined) {
+                        const mins = Math.max(0, Math.floor(d.eta_seconds / 60));
+                        const mm = String(mins).padStart(2, '0');
+                        document.getElementById('etaDisplay').textContent = mm + ':00';
+                    }
+                    if (d.status === 'waiting' && d.created_at) {
+                        const waited = (Date.now() - new Date(d.created_at).getTime()) / 1000;
+                        if (waited > 20 * 60) {
+                            window.pushToast?.('delay', 'Estamos experimentando retrasos!');
+                        }
                     }
                 })
                 .catch(() => {});

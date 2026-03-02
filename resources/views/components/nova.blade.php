@@ -68,6 +68,8 @@
             @endauth
         </header>
 
+        @include('partials.client-toasts')
+
         {{-- CONTENIDO DINÁMICO --}}
         <main>
             {{ $slot }}
