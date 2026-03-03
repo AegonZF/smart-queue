@@ -13,6 +13,7 @@ class ServiceCounter extends Model
         'label',
         'current_turn',
         'active_clients',
+        'is_active',
     ];
 
     protected function casts(): array
@@ -20,6 +21,7 @@ class ServiceCounter extends Model
         return [
             'current_turn' => 'integer',
             'active_clients' => 'integer',
+            'is_active' => 'boolean',
         ];
     }
 
@@ -72,6 +74,7 @@ class ServiceCounter extends Model
             ->pluck('area_designada');
 
         return static::where('type', $type)
+            ->where('is_active', true)
             ->whereIn('label', $assignedLabels)
             ->orderBy('active_clients', 'asc')
             ->first();

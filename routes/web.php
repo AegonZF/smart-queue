@@ -62,6 +62,12 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::post('/turnos/toggle', [TurnManagementController::class, 'toggle'])
         ->name('admin.turns.toggle');
+
+    Route::post('/area/{counter}/disable', [TurnManagementController::class, 'disableArea'])
+        ->name('admin.area.disable');
+
+    Route::post('/area/{counter}/enable', [TurnManagementController::class, 'enableArea'])
+        ->name('admin.area.enable');
 });
 
 // =========================================================
