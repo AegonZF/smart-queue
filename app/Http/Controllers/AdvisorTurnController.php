@@ -10,22 +10,36 @@ use Illuminate\Support\Facades\DB;
 class AdvisorTurnController extends Controller
 {
     /**
-     * Devuelve el estado actual de la cola (para refresco del operador).
+     * Devuelve el estado actual de la cola del operador (filtrado por su área asignada).
      */
     public function status(Request $request)
     {
+        $user = auth()->user()->fresh();
+        $counterId = $this->getOperatorCounterId($user);
+
+        if (! $counterId) {
+            return response()->json([
+                'has_next' => false,
+                'waiting_count' => 0,
+                'user_area' => $user?->area_designada,
+            ]);
+        }
+
         $nextTurn = Turn::where('status', 'waiting')
+            ->where('service_counter_id', $counterId)
             ->orderBy('created_at', 'asc')
             ->with('serviceCounter')
             ->first();
 
-        $waitingCount = Turn::where('status', 'waiting')->count();
+        $waitingCount = Turn::where('status', 'waiting')
+            ->where('service_counter_id', $counterId)
+            ->count();
 
         if (! $nextTurn) {
             return response()->json([
                 'has_next' => false,
                 'waiting_count' => 0,
-                'user_area' => optional(auth()->user()->fresh())->area_designada,
+                'user_area' => $user?->area_designada,
             ]);
         }
 
@@ -36,7 +50,7 @@ class AdvisorTurnController extends Controller
             'counter_label' => optional($nextTurn->serviceCounter)->label,
             'tramite' => $nextTurn->tramite,
             'created_at' => optional($nextTurn->created_at)?->toIso8601String(),
-            'user_area' => optional(auth()->user()->fresh())->area_designada,
+            'user_area' => $user?->area_designada,
         ]);
     }
 
@@ -87,12 +101,32 @@ class AdvisorTurnController extends Controller
     }
 
     /**
-     * Obtiene el primer turno en espera (FIFO).
+     * Obtiene el primer turno en espera de la fila del operador (FIFO).
      */
     private function getCurrentTurn(): ?Turn
     {
+        $user = auth()->user()->fresh();
+        $counterId = $this->getOperatorCounterId($user);
+
+        if (! $counterId) {
+            return null;
+        }
+
         return Turn::where('status', 'waiting')
+            ->where('service_counter_id', $counterId)
             ->orderBy('created_at', 'asc')
             ->first();
+    }
+
+    /**
+     * Obtiene el ID del service_counter asignado al operador.
+     */
+    private function getOperatorCounterId($user): ?int
+    {
+        if (! $user || ! $user->area_designada) {
+            return null;
+        }
+
+        return ServiceCounter::where('label', $user->area_designada)->value('id');
     }
 }

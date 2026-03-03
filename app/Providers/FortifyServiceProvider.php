@@ -49,6 +49,14 @@ class FortifyServiceProvider extends ServiceProvider
                 return null;
             }
 
+            // Auto-reset de intentos fallidos después de 1 hora
+            if (! $user->is_blocked && $user->first_failed_at && $user->first_failed_at->diffInMinutes(now()) >= 60) {
+                $user->update([
+                    'failed_login_attempts' => 0,
+                    'first_failed_at' => null,
+                ]);
+            }
+
             if ($user->is_blocked) {
                 throw \Illuminate\Validation\ValidationException::withMessages([
                     'blocked' => 'Tu cuenta ha sido bloqueada por intentos fallidos. Revisa tu correo para desbloquearla.',
@@ -60,8 +68,6 @@ class FortifyServiceProvider extends ServiceProvider
             }
 
             // Contraseña incorrecta: calcular intentos restantes
-            // El listener HandleFailedLogin incrementará failed_login_attempts después,
-            // así que sumamos 1 al conteo actual para predecir el valor post-incremento.
             $maxAttempts = 3;
             $attemptsAfter = $user->failed_login_attempts + 1;
             $remaining = $maxAttempts - $attemptsAfter;

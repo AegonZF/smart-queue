@@ -53,16 +53,18 @@
         <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl border border-white/5">
             
             <div class="w-full">
-                <h2 class="text-white text-center text-[1.15rem] font-normal mb-8 tracking-wide">
+                <h2 class="text-white text-center text-[1.15rem] font-normal mb-4 tracking-wide">
                     Bienvenido
                 </h2>
+
+                <p class="text-gray-400 text-[11px] text-center mb-6">Los campos obligatorios tienen <span class="text-red-400">*</span></p>
 
                 <form method="POST" action="{{ route('login.store') }}" class="flex flex-col">
                     @csrf
 
                     {{-- Campo Correo --}}
                     <div class="mb-5">
-                        <label class="block text-gray-300 text-[13px] mb-2" for="email">Correo electrónico</label>
+                        <label class="block text-gray-300 text-[13px] mb-2" for="email">Correo electrónico <span class="text-red-400">*</span></label>
                         <input 
                             id="email"
                             type="text" 
@@ -74,7 +76,7 @@
 
                     {{-- Campo Contraseña (Con botón personalizado) --}}
                     <div class="mb-2" x-data="{ show: false }">
-                        <label class="block text-gray-300 text-[13px] mb-2" for="password">Contraseña</label>
+                        <label class="block text-gray-300 text-[13px] mb-2" for="password">Contraseña <span class="text-red-400">*</span></label>
                         <div class="relative w-full">
                             <input 
                                 id="password"
@@ -125,6 +127,12 @@
                             {{ $message }}
                         </p>
                     @enderror
+
+                    @if (session('remaining_attempts'))
+                        <p class="text-amber-400 text-[12px] text-center mt-1 font-medium">
+                            Contraseña incorrecta. Te quedan {{ session('remaining_attempts') }} intento{{ session('remaining_attempts') > 1 ? 's' : '' }}.
+                        </p>
+                    @endif
 
                     @if (session('invalidUnlockLink'))
                         <p class="text-[#ef4444] text-[12px] text-center mt-1 font-medium">

@@ -56,6 +56,7 @@ class RegisterEmployeeController extends Controller
             'Asesor 1',
             'Asesor 2',
             'Asesor 3',
+            'Asesor 4',
         ];
 
         return view('admin.register-employee', compact('empleados', 'areas'));

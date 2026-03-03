@@ -111,18 +111,30 @@ Route::middleware(['auth'])->prefix('nova')->group(function () {
 Route::middleware(['auth'])->prefix('gestion-turnos')->group(function () {
     Route::get('/', function () {
         $counters = \App\Models\ServiceCounter::all();
-        $nextTurn = \App\Models\Turn::where('status', 'waiting')
-            ->orderBy('created_at', 'asc')
-            ->with('serviceCounter')
-            ->first();
-        $waitingCount = \App\Models\Turn::where('status', 'waiting')->count();
 
-        // Asegurar que el área asignada del operador esté actualizada en cada request
+        // Obtener el counter asignado al operador
         $user = auth()->user();
         if ($user) {
             $user->refresh();
         }
         $userArea = $user?->area_designada;
+        $counter = $userArea
+            ? \App\Models\ServiceCounter::where('label', $userArea)->first()
+            : null;
+
+        // Filtrar turnos solo del counter asignado al operador
+        $nextTurn = null;
+        $waitingCount = 0;
+        if ($counter) {
+            $nextTurn = \App\Models\Turn::where('status', 'waiting')
+                ->where('service_counter_id', $counter->id)
+                ->orderBy('created_at', 'asc')
+                ->with('serviceCounter')
+                ->first();
+            $waitingCount = \App\Models\Turn::where('status', 'waiting')
+                ->where('service_counter_id', $counter->id)
+                ->count();
+        }
 
         return view('advisor.index', compact('counters', 'nextTurn', 'waitingCount', 'userArea'));
     })->name('advisor.dashboard');

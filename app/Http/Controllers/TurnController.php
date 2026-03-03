@@ -24,7 +24,7 @@ class TurnController extends Controller
 
         // Verificar que la generación esté activa
         if (! SystemSetting::isTurnGenerationActive()) {
-            return back()->with('error', 'La generación de turnos no está activa. Contacte al administrador.');
+            return back()->with('error', 'El banco se encuentra fuera de servicio');
         }
 
         // Verificar que el usuario no tenga un turno activo
@@ -116,12 +116,24 @@ class TurnController extends Controller
             ]);
         }
 
+        // Calcular turnos delante en la misma fila (mismo service_counter)
+        $turnsAhead = Turn::where('service_counter_id', $turn->service_counter_id)
+            ->where('status', 'waiting')
+            ->where('created_at', '<', $turn->created_at)
+            ->count();
+
+        $estimatedWait = $turnsAhead * 10; // 10 minutos promedio por turno
+        $isNext = $turnsAhead === 0;
+
         return response()->json([
             'has_turn' => true,
             'turn_number' => $turn->turn_number,
             'counter_label' => $turn->serviceCounter->label,
+            'counter_identifier' => $turn->serviceCounter->identifier,
             'status' => $turn->status,
             'service_type' => $turn->service_type,
+            'estimated_wait' => $estimatedWait,
+            'is_next' => $isNext,
         ]);
     }
 }

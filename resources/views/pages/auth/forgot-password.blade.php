@@ -8,7 +8,6 @@
         
         {{-- SECCIÓN DEL LOGO ACTUALIZADA --}}
         <div class="mb-10 text-center flex flex-col items-center">
-            {{-- Se ajustó a w-[220px] h-auto para logos horizontales estándar --}}
             <img 
                 src="{{ asset('images/Logo_1.svg') }}" 
                 alt="Logo NovaBank" 
@@ -16,8 +15,27 @@
             >
         </div>
 
-        {{-- TARJETA PRINCIPAL CON DIMENSIONES (revisalo erick)--}}
-        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl">
+        {{-- TARJETA PRINCIPAL --}}
+        <div class="w-full max-w-[440px] min-h-[540px] flex flex-col justify-between bg-[#072b4e] px-10 py-12 rounded-[1.5rem] shadow-2xl"
+             x-data="{
+                 cooldown: 0,
+                 sent: {{ session('status') ? 'true' : 'false' }},
+                 init() {
+                     if (this.sent) {
+                         this.cooldown = 30;
+                         this.startTimer();
+                     }
+                 },
+                 startTimer() {
+                     const interval = setInterval(() => {
+                         this.cooldown--;
+                         if (this.cooldown <= 0) {
+                             this.cooldown = 0;
+                             clearInterval(interval);
+                         }
+                     }, 1000);
+                 }
+             }">
             
             {{-- Grupo Superior: Título y Formulario --}}
             <div class="w-full">
@@ -25,7 +43,8 @@
                     Recuperar contraseña
                 </h2>
 
-                <form method="POST" action="{{ route('password.email') }}" class="flex flex-col">
+                <form method="POST" action="{{ route('password.email') }}" class="flex flex-col"
+                      @submit="if (cooldown > 0) { $event.preventDefault(); return; }">
                     @csrf
                     
                     <div class="mb-6">
@@ -52,8 +71,18 @@
                         @endif
                     </div>
 
-                    <button type="submit" class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1">
-                        Enviar
+                    {{-- Contador de cooldown --}}
+                    <template x-if="cooldown > 0">
+                        <p class="text-amber-400 text-[12px] text-center mb-3 font-medium">
+                            Podrás enviar otro correo en <span x-text="cooldown"></span> segundos
+                        </p>
+                    </template>
+
+                    <button type="submit" 
+                        :disabled="cooldown > 0"
+                        :class="cooldown > 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#029A73]'"
+                        class="w-full bg-[#02B48A] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1">
+                        <span x-text="cooldown > 0 ? 'Espera ' + cooldown + 's' : 'Enviar'"></span>
                     </button>
                 </form>
             </div>

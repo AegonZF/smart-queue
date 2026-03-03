@@ -17,6 +17,19 @@ class HandleFailedLogin
             return;
         }
 
+        // Si ha pasado más de 1 hora desde el primer intento fallido, reiniciar contador
+        if ($user->first_failed_at && $user->first_failed_at->diffInMinutes(now()) >= 60) {
+            $user->update([
+                'failed_login_attempts' => 0,
+                'first_failed_at' => null,
+            ]);
+        }
+
+        // Si es el primer intento fallido, registrar la hora
+        if ($user->failed_login_attempts === 0) {
+            $user->update(['first_failed_at' => now()]);
+        }
+
         $user->increment('failed_login_attempts');
 
         if ($user->failed_login_attempts >= 3) {
@@ -25,6 +38,7 @@ class HandleFailedLogin
             $user->update([
                 'is_blocked' => true,
                 'unlock_token' => $token,
+                'first_failed_at' => null,
             ]);
 
             $unlockUrl = url("/account/unlock/{$token}");

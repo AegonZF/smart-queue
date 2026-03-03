@@ -25,9 +25,10 @@ class User extends Authenticatable
         'password',
         'role',
         'failed_login_attempts',
+        'first_failed_at',
         'is_blocked',
         'unlock_token',
-        'area_designada', // Permitir asignación masiva
+        'area_designada',
     ];
 
     /**
@@ -53,6 +54,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_blocked' => 'boolean',
+            'first_failed_at' => 'datetime',
         ];
     }
 

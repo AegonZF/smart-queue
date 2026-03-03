@@ -34,14 +34,14 @@ class ServiceCounter extends Model
     }
 
     /**
-     * Genera el siguiente número de turno (0-999, rotativo).
+     * Genera el siguiente número de turno (000-100, rotativo).
      */
     public function getNextTurnNumber(): string
     {
         $next = $this->current_turn + 1;
 
-        if ($next > 999) {
-            $next = 1;
+        if ($next > 100) {
+            $next = 0;
         }
 
         $this->update(['current_turn' => $next]);
@@ -61,11 +61,18 @@ class ServiceCounter extends Model
     }
 
     /**
-     * Obtiene el counter con menos carga para un tipo dado.
+     * Obtiene el counter con menos carga para un tipo dado,
+     * solo considerando counters que tengan un operador asignado.
      */
     public static function leastLoaded(string $type): ?self
     {
+        // Solo counters que tengan un operador asignado (area_designada = label)
+        $assignedLabels = \App\Models\User::where('role', 'operador')
+            ->whereNotNull('area_designada')
+            ->pluck('area_designada');
+
         return static::where('type', $type)
+            ->whereIn('label', $assignedLabels)
             ->orderBy('active_clients', 'asc')
             ->first();
     }
