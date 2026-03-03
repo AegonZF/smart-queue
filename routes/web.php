@@ -70,7 +70,16 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 Route::middleware(['auth'])->prefix('nova')->group(function () {
 
     // 1. Pantalla principal: Selección de trámite
-    Route::view('/', 'client.index')->name('nova.index');
+    Route::get('/', function () {
+        $turn = \App\Models\Turn::getUserActiveTurn(auth()->id());
+        if ($turn) {
+            return $turn->service_type === 'ventanilla'
+                ? redirect()->route('nova.ventanilla.asignado')
+                : redirect()->route('nova.asesor.asignado');
+        }
+
+        return view('client.index');
+    })->name('nova.index');
 
     // Sub-flujo: Ventanilla
     Route::prefix('ventanilla')->group(function () {

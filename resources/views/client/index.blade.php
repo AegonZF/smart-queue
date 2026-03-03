@@ -106,28 +106,6 @@
 
         <main class="flex flex-col items-center justify-center mt-6 px-6 w-full">
 
-            {{-- Si el usuario ya tiene un turno activo, mostrar info --}}
-            @php
-                $activeTurn = \App\Models\Turn::getUserActiveTurn(auth()->id());
-            @endphp
-
-            @if($activeTurn)
-                <h1 class="text-[28px] md:text-[36px] font-bold tracking-[0.25em] text-center uppercase mb-10 drop-shadow-md">
-                    TU TURNO ACTIVO
-                </h1>
-
-                <div class="bg-[#072b4e] rounded-[2.5rem] p-12 w-full max-w-lg text-center shadow-2xl border border-white/10 mb-10">
-                    <p class="text-lg mb-4 text-white/80">{{ $activeTurn->serviceCounter->label }}</p>
-                    <p class="text-6xl font-bold mb-4 text-[#02B48A]">{{ $activeTurn->turn_number }}</p>
-                    <p class="text-lg text-white/70 mb-8">Estado: <span class="font-bold text-white">{{ $activeTurn->status === 'waiting' ? 'En espera' : 'En atención' }}</span></p>
-                    
-                    <form method="GET" action="{{ route('nova.turno.cancel') }}">
-                        <button type="submit" class="bg-[#d3111b] hover:bg-[#b00e16] transition-all duration-200 rounded-[2rem] px-10 py-5 text-xl font-bold text-white shadow-xl hover:scale-105 active:scale-95">
-                            Cancelar Turno
-                        </button>
-                    </form>
-                </div>
-            @else
                 {{-- Título con espaciado amplio igual que el diseño --}}
                 <h1 class="text-[28px] md:text-[36px] font-bold tracking-[0.25em] text-center uppercase mb-20 drop-shadow-md">
                     TRÁMITE A REALIZAR
@@ -146,7 +124,6 @@
                         <span class="text-2xl font-bold leading-tight text-white group-hover:drop-shadow-lg">Hablar con <br> un Asesor</span>
                     </a>
                 </div>
-            @endif
         </main>
     </div>
 </x-nova>
