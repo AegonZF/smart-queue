@@ -10,6 +10,8 @@
              isNext: false,
              notified: false,
              showNotification: false,
+             delayNotified: false,
+             showDelayNotification: false,
              counterLabel: @js($turn->serviceCounter->identifier),
              poll() {
                  fetch('{{ route('nova.turno.active') }}', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
@@ -26,6 +28,11 @@
                              return;
                          }
                          this.estimatedWait = d.estimated_wait ?? 0;
+                         if (this.estimatedWait > 15 && !this.delayNotified) {
+                             this.delayNotified = true;
+                             this.showDelayNotification = true;
+                             setTimeout(() => this.showDelayNotification = false, 8000);
+                         }
                          if (d.is_next && !this.notified) {
                              this.notified = true;
                              this.showNotification = true;
@@ -38,6 +45,25 @@
          }"
          x-init="poll(); setInterval(() => poll(), 3000)">
         
+        {{-- Notificación: Retraso --}}
+        <div
+            x-show="showDelayNotification"
+            x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="translate-x-full opacity-0"
+            x-transition:enter-end="translate-x-0 opacity-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="translate-x-0 opacity-100"
+            x-transition:leave-end="translate-x-full opacity-0"
+            class="fixed top-44 right-8 z-[100] flex items-center gap-4 bg-[#4a1f00] text-white px-6 py-4 rounded-2xl shadow-2xl border border-white/10 max-w-sm"
+        >
+            <span class="flex-shrink-0 bg-[#2e1200] rounded-xl p-2">
+                <svg class="w-8 h-8 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+            </span>
+            <span class="font-bold text-base leading-snug">¡Estamos experimentando retrasos!</span>
+        </div>
+
         {{-- Notificación: Es su turno --}}
         <div
             x-show="showNotification"

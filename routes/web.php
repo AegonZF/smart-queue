@@ -192,9 +192,38 @@ Route::middleware('auth')->group(function () {
         return back();
     })->name('profile.update');
 
-    Route::put('/perfil/password', function () {
-        return back();
-    })->name('password.update');
+    Route::post('/perfil/password', function (\Illuminate\Http\Request $request) {
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password'         => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).+$/',
+                'confirmed',
+            ],
+        ], [
+            'current_password.required' => 'Debes ingresar tu contraseña actual.',
+            'password.required'         => 'La nueva contraseña es obligatoria.',
+            'password.min'              => 'La nueva contraseña debe tener al menos 8 caracteres.',
+            'password.regex'            => 'La nueva contraseña debe contener al menos una letra y un número.',
+            'password.confirmed'        => 'Las contraseñas nuevas no coinciden.',
+        ]);
+
+        if (!\Illuminate\Support\Facades\Hash::check($request->current_password, auth()->user()->password)) {
+            return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
+        }
+
+        if (\Illuminate\Support\Facades\Hash::check($request->password, auth()->user()->password)) {
+            return back()->withErrors(['password' => 'La nueva contraseña no puede ser igual a la contraseña actual.']);
+        }
+
+        auth()->user()->update([
+            'password' => \Illuminate\Support\Facades\Hash::make($request->password),
+        ]);
+
+        return back()->with('status', 'password-updated');
+    })->name('profile.password.update');
 
     Route::delete('/perfil/eliminar', function (\Illuminate\Http\Request $request) {
         $user = auth()->user();

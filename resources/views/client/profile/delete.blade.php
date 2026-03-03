@@ -31,10 +31,6 @@
                             <span class="inline-block mr-3 text-red-400 font-bold">•</span>
                             <span>Todos tus datos personales serán eliminados permanentemente.</span>
                         </p>
-                        <p class="flex items-start">
-                            <span class="inline-block mr-3 text-red-400 font-bold">•</span>
-                            <span>Perderás acceso a tu historial de turnos en el sistema.</span>
-                        </p>
                     </div>
                 </div>
 

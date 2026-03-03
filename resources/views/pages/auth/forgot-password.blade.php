@@ -81,7 +81,7 @@
                     <button type="submit" 
                         :disabled="cooldown > 0"
                         :class="cooldown > 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#029A73]'"
-                        class="w-full bg-[#02B48A] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1">
+                        class="w-full bg-[#02B48A] text-white font-medium py-3 rounded-lg transition duration-200 text-sm mt-1 cursor-pointer">
                         <span x-text="cooldown > 0 ? 'Espera ' + cooldown + 's' : 'Enviar'"></span>
                     </button>
                 </form>

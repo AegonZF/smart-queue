@@ -147,7 +147,7 @@
                         </a>
                     </div>
 
-                    <button type="submit" class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-3 rounded-full transition duration-200 text-sm active:scale-95">
+                    <button type="submit" class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-medium py-3 rounded-full transition duration-200 text-sm active:scale-95 cursor-pointer">
                         Iniciar sesión
                     </button>
                 </form>

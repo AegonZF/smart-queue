@@ -109,7 +109,7 @@
                     </div>
 
                     <button type="submit" 
-                        class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-bold py-3.5 rounded-full mt-4 transition-all shadow-lg active:scale-95 !text-[16px]">
+                        class="w-full bg-[#02B48A] hover:bg-[#029A73] text-white font-bold py-3.5 rounded-full mt-4 transition-all shadow-lg active:scale-95 !text-[16px] cursor-pointer">
                         {{ __('Registrar cuenta') }}
                     </button>
                 </form>
