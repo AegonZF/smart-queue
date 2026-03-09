@@ -50,13 +50,11 @@
             areaId: null,
             areaLabel: '',
             areaOperador: '',
-            areaTurnos: 0,
             areaActive: true,
-            openArea(id, label, operador, turnos, active) {
+            openArea(id, label, operador, active) {
                 this.areaId = id;
                 this.areaLabel = label;
                 this.areaOperador = operador;
-                this.areaTurnos = turnos;
                 this.areaActive = active;
                 this.showAreaModal = true;
             }
@@ -73,15 +71,13 @@
                     @foreach($ventanillas as $ventanilla)
                         @php
                             $operador = \App\Models\User::where('area_designada', $ventanilla->label)->first();
-                            $turnosTotales = $ventanilla->turns()->count();
                         @endphp
-                        <div @click="openArea({{ $ventanilla->id }}, '{{ $ventanilla->label }}', '{{ $operador ? $operador->name : 'Sin asignar' }}', {{ $turnosTotales }}, {{ $ventanilla->is_active ? 'true' : 'false' }})"
+                        <div @click="openArea({{ $ventanilla->id }}, '{{ $ventanilla->label }}', '{{ $operador ? $operador->name : 'Sin asignar' }}', {{ $ventanilla->is_active ? 'true' : 'false' }})"
                              class="rounded-[1.25rem] sm:rounded-[1.5rem] p-5 sm:p-7 md:p-8 flex flex-col items-center justify-center min-h-[150px] sm:min-h-[170px] shadow-lg border border-white/5 cursor-pointer transition-all hover:scale-[1.03] hover:shadow-2xl {{ $ventanilla->is_active ? 'bg-[#02B48A]' : 'bg-gray-500/70' }}">
                             <h2 class="font-bold text-[17px] sm:text-[18px] mb-2 text-white text-center">{{ $ventanilla->label }}</h2>
                             <p class="text-[14px] sm:text-[15px] mb-4 sm:mb-6 text-white/90 text-center">Operador:
                                 <span class="font-bold">{{ $operador ? $operador->name : 'Sin asignar' }}</span>
                             </p>
-                            <p class="text-[14px] sm:text-[15px] text-white/90 text-center">Turnos totales: <span class="font-bold">{{ $turnosTotales }}</span></p>
                             @if(!$ventanilla->is_active)
                                 <span class="mt-2 text-[13px] bg-red-600/80 px-3 py-1 rounded-full font-semibold">Deshabilitada</span>
                             @endif
@@ -92,7 +88,6 @@
                         <div class="bg-[#02B48A] rounded-[1.25rem] sm:rounded-[1.5rem] p-5 sm:p-7 md:p-8 flex flex-col items-center justify-center min-h-[150px] sm:min-h-[170px] shadow-lg border border-white/5">
                             <h2 class="font-bold text-[17px] sm:text-[18px] mb-2 text-white">Ventanilla {{ $i }}</h2>
                             <p class="text-[14px] sm:text-[15px] mb-4 sm:mb-6 text-white/90">Operador:</p>
-                            <p class="text-[14px] sm:text-[15px] text-white/90">Turnos totales:</p>
                         </div>
                     @endfor
                 @endif
@@ -104,15 +99,13 @@
                     @foreach($asesores as $asesor)
                         @php
                             $operador = \App\Models\User::where('area_designada', $asesor->label)->first();
-                            $turnosTotales = $asesor->turns()->count();
                         @endphp
-                        <div @click="openArea({{ $asesor->id }}, '{{ $asesor->label }}', '{{ $operador ? $operador->name : 'Sin asignar' }}', {{ $turnosTotales }}, {{ $asesor->is_active ? 'true' : 'false' }})"
+                        <div @click="openArea({{ $asesor->id }}, '{{ $asesor->label }}', '{{ $operador ? $operador->name : 'Sin asignar' }}', {{ $asesor->is_active ? 'true' : 'false' }})"
                              class="rounded-[1.25rem] sm:rounded-[1.5rem] p-5 sm:p-7 md:p-8 flex flex-col items-center justify-center min-h-[150px] sm:min-h-[170px] shadow-lg border border-white/5 cursor-pointer transition-all hover:scale-[1.03] hover:shadow-2xl {{ $asesor->is_active ? 'bg-[#02B48A]' : 'bg-gray-500/70' }}">
                             <h2 class="font-bold text-[17px] sm:text-[18px] mb-2 text-white text-center">{{ $asesor->label }}</h2>
                             <p class="text-[14px] sm:text-[15px] mb-4 sm:mb-6 text-white/90 text-center">Operador:
                                 <span class="font-bold">{{ $operador ? $operador->name : 'Sin asignar' }}</span>
                             </p>
-                            <p class="text-[14px] sm:text-[15px] text-white/90 text-center">Turnos totales: <span class="font-bold">{{ $turnosTotales }}</span></p>
                             @if(!$asesor->is_active)
                                 <span class="mt-2 text-[13px] bg-red-600/80 px-3 py-1 rounded-full font-semibold">Deshabilitada</span>
                             @endif
@@ -123,7 +116,6 @@
                         <div class="bg-[#02B48A] rounded-[1.25rem] sm:rounded-[1.5rem] p-5 sm:p-7 md:p-8 flex flex-col items-center justify-center min-h-[150px] sm:min-h-[170px] shadow-lg border border-white/5">
                             <h2 class="font-bold text-[17px] sm:text-[18px] mb-2 text-white">Asesor {{ $i }}</h2>
                             <p class="text-[14px] sm:text-[15px] mb-4 sm:mb-6 text-white/90">Operador:</p>
-                            <p class="text-[14px] sm:text-[15px] text-white/90">Turnos totales:</p>
                         </div>
                     @endfor
                 @endif
@@ -157,8 +149,7 @@
 
                         {{-- Info del Área --}}
                         <h2 class="text-white text-[20px] sm:text-[22px] font-bold mb-3" x-text="areaLabel"></h2>
-                        <p class="text-white/90 text-[15px] sm:text-[16px] mb-1">Operador: <span class="font-bold" x-text="areaOperador"></span></p>
-                        <p class="text-white/90 text-[15px] sm:text-[16px] mb-6 sm:mb-8">Turnos totales: <span class="font-bold" x-text="areaTurnos"></span></p>
+                        <p class="text-white/90 text-[15px] sm:text-[16px] mb-6 sm:mb-8">Operador: <span class="font-bold" x-text="areaOperador"></span></p>
 
                         {{-- Botón Deshabilitar / Habilitar --}}
                         <form x-ref="areaForm" method="POST" :action="areaActive ? '/admin/area/' + areaId + '/disable' : '/admin/area/' + areaId + '/enable'">
@@ -295,15 +286,102 @@
             </div>
 
             {{-- Promedio y botón de reporte --}}
-            <div class="flex flex-col md:flex-row items-center justify-center gap-7 sm:gap-10 md:gap-12 w-full max-w-[1000px] mb-16 sm:mb-20 md:mb-24">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-7 sm:gap-10 md:gap-12 w-full max-w-[1000px] mb-16 sm:mb-20 md:mb-24"
+                 x-data="{ showReports: false, reportDates: [], loading: false,
+                     async fetchDates() {
+                         this.loading = true;
+                         try {
+                             const res = await fetch('{{ route('admin.report.dates') }}');
+                             this.reportDates = await res.json();
+                         } catch(e) {
+                             this.reportDates = [];
+                         }
+                         this.loading = false;
+                     },
+                     formatDate(dateStr) {
+                         const d = new Date(dateStr + 'T12:00:00');
+                         return d.toLocaleDateString('es-MX', { day: '2-digit', month: '2-digit', year: '2-digit' });
+                     }
+                 }">
                 <div class="text-center">
                     <h3 class="text-[14px] sm:text-[15px] md:text-[16px] font-bold leading-tight mb-2 sm:mb-3">Promedio de<br>personas atendidas<br>con éxito:</h3>
                     <p class="text-[24px] sm:text-[26px] md:text-[28px] font-bold">{{ $promedioExito }}%</p>
                 </div>
-                <a href="{{ route('admin.report.export') }}"
-                   class="bg-[#02B48A] hover:bg-[#029A73] text-white px-7 sm:px-9 md:px-10 py-4 sm:py-5 rounded-2xl font-bold text-[16px] sm:text-[17px] md:text-[18px] transition-all active:scale-95 shadow-xl w-full sm:min-w-[220px] text-center">
-                    Descargar reporte
-                </a>
+                <button @click="fetchDates(); showReports = true"
+                   class="bg-[#02B48A] hover:bg-[#029A73] text-white px-6 sm:px-8 md:px-10 py-4 sm:py-5 rounded-2xl font-bold text-[16px] sm:text-[17px] md:text-[18px] transition-all active:scale-95 shadow-xl text-center leading-tight sm:min-w-[280px]">
+                    Lista de reportes
+                </button>
+
+                {{-- Modal Lista de Reportes --}}
+                <template x-teleport="body">
+                    <div x-show="showReports"
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100"
+                         x-transition:leave-end="opacity-0"
+                         class="fixed inset-0 z-[9999] flex items-center justify-center"
+                         style="display: none;"
+                         @keydown.escape.window="showReports = false">
+
+                        {{-- Fondo con blur --}}
+                        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showReports = false"></div>
+
+                        {{-- Contenido del Modal --}}
+                        <div x-show="showReports"
+                             x-transition:enter="transition ease-out duration-200 delay-75"
+                             x-transition:enter-start="opacity-0 scale-90"
+                             x-transition:enter-end="opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 scale-100"
+                             x-transition:leave-end="opacity-0 scale-90"
+                             class="relative bg-[#111318] border border-white/10 rounded-3xl shadow-2xl p-8 sm:p-10 max-w-lg w-full mx-4 font-['Source_Sans_3'] max-h-[80vh] flex flex-col">
+
+                            {{-- Título --}}
+                            <h2 class="text-white text-[22px] sm:text-[26px] font-bold text-center mb-6">Lista de reportes</h2>
+
+                            {{-- Subtítulo Fecha --}}
+                            <h3 class="text-white text-[16px] sm:text-[18px] font-bold mb-4 px-2">Fecha</h3>
+
+                            {{-- Lista de fechas con scroll --}}
+                            <div class="flex-1 overflow-y-auto pr-1" style="max-height: 50vh;">
+                                <template x-if="loading">
+                                    <div class="text-center py-8">
+                                        <p class="text-white/60 text-[15px]">Cargando...</p>
+                                    </div>
+                                </template>
+
+                                <template x-if="!loading && reportDates.length === 0">
+                                    <div class="text-center py-8">
+                                        <p class="text-white/60 text-[15px]">No hay reportes disponibles.</p>
+                                    </div>
+                                </template>
+
+                                <template x-if="!loading && reportDates.length > 0">
+                                    <div class="flex flex-col gap-4">
+                                        <template x-for="date in reportDates" :key="date">
+                                            <div class="flex items-center justify-between py-3 px-2 border-b border-white/10">
+                                                <span class="text-white/90 text-[14px] sm:text-[15px]" x-text="formatDate(date)"></span>
+                                                <a :href="'{{ route('admin.report.export') }}?date=' + date"
+                                                   class="bg-[#0d6b56] hover:bg-[#0a5a48] text-white px-5 py-2 rounded-full text-[13px] sm:text-[14px] font-semibold transition-all active:scale-95 shadow-md">
+                                                    Descargar
+                                                </a>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+
+                            {{-- Botón Cerrar --}}
+                            <button type="button"
+                                    @click="showReports = false"
+                                    class="mt-6 text-white/70 hover:text-white text-[14px] underline transition-colors text-center">
+                                Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </template>
             </div>
 
         </main>

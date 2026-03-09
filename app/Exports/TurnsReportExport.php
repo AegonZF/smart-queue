@@ -11,6 +11,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class TurnsReportExport implements FromArray, WithHeadings, WithStyles, WithTitle
 {
+    public function __construct(protected ?string $date = null) {}
+
     public function title(): string
     {
         return 'Reporte de Turnos';
@@ -26,10 +28,16 @@ class TurnsReportExport implements FromArray, WithHeadings, WithStyles, WithTitl
 
     public function array(): array
     {
-        $totalGenerados = Turn::count();
-        $totalExpirados = Turn::where('status', 'expired')->count();
-        $totalCancelados = Turn::where('status', 'cancelled')->count();
-        $totalFinalizados = Turn::where('status', 'completed')->count();
+        $query = Turn::query();
+
+        if ($this->date) {
+            $query->whereDate('created_at', $this->date);
+        }
+
+        $totalGenerados = (clone $query)->count();
+        $totalExpirados = (clone $query)->where('status', 'expired')->count();
+        $totalCancelados = (clone $query)->where('status', 'cancelled')->count();
+        $totalFinalizados = (clone $query)->where('status', 'completed')->count();
         $atendidosExito = $totalFinalizados;
         $promedioExito = $totalGenerados > 0
             ? round(($atendidosExito / $totalGenerados) * 100, 1)

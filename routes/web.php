@@ -51,10 +51,10 @@ Route::middleware(['auth', 'role:administrador'])->prefix('admin')->group(functi
             abort(403);
         }
 
-        $totalGenerados = \App\Models\Turn::count();
-        $totalExpirados = \App\Models\Turn::where('status', 'expired')->count();
-        $totalCancelados = \App\Models\Turn::where('status', 'cancelled')->count();
-        $totalFinalizados = \App\Models\Turn::where('status', 'completed')->count();
+        $totalGenerados = \App\Models\Turn::whereDate('created_at', today())->count();
+        $totalExpirados = \App\Models\Turn::whereDate('created_at', today())->where('status', 'expired')->count();
+        $totalCancelados = \App\Models\Turn::whereDate('created_at', today())->where('status', 'cancelled')->count();
+        $totalFinalizados = \App\Models\Turn::whereDate('created_at', today())->where('status', 'completed')->count();
         $atendidosExito = $totalFinalizados;
         $promedioExito = $totalGenerados > 0
             ? round(($atendidosExito / $totalGenerados) * 100, 1)
@@ -92,6 +92,9 @@ Route::middleware(['auth', 'role:administrador'])->prefix('admin')->group(functi
 
     Route::post('/area/{counter}/enable', [TurnManagementController::class, 'enableArea'])
         ->name('admin.area.enable');
+
+    Route::get('/reporte/fechas', [\App\Http\Controllers\Admin\ReportExportController::class, 'dates'])
+        ->name('admin.report.dates');
 
     Route::get('/reporte/descargar', [\App\Http\Controllers\Admin\ReportExportController::class, 'export'])
         ->name('admin.report.export');
