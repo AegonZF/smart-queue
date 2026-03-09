@@ -132,11 +132,19 @@
                                 <form x-ref="delForm" method="POST" action="{{ route('admin.register-employee.destroy', $empleado->id) }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" @click="open = true" class="bg-[#B21321] hover:bg-[#900f1a] text-white rounded-full p-2 transition duration-200 active:scale-95 shadow" title="Eliminar">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-3h4m-5 0a1 1 0 001-1h2a1 1 0 001 1m-4 0H6m12 0h-3M9 10v8m6-8v8" />
-                                        </svg>
-                                    </button>
+                                    @if($isActive)
+                                        <span class="bg-gray-500 text-white/50 rounded-full p-2 inline-flex cursor-not-allowed opacity-50" title="No se puede eliminar mientras la generación de turnos está activa">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-3h4m-5 0a1 1 0 001-1h2a1 1 0 001 1m-4 0H6m12 0h-3M9 10v8m6-8v8" />
+                                            </svg>
+                                        </span>
+                                    @else
+                                        <button type="button" @click="open = true" class="bg-[#B21321] hover:bg-[#900f1a] text-white rounded-full p-2 transition duration-200 active:scale-95 shadow" title="Eliminar">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5-3h4m-5 0a1 1 0 001-1h2a1 1 0 001 1m-4 0H6m12 0h-3M9 10v8m6-8v8" />
+                                            </svg>
+                                        </button>
+                                    @endif
                                 </form>
 
                                 {{-- Modal de confirmación --}}

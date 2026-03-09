@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Concerns\PasswordValidationRules;
 use App\Http\Controllers\Controller;
+use App\Models\SystemSetting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -49,6 +50,7 @@ class RegisterEmployeeController extends Controller
     public function index()
     {
         $empleados = User::where('role', 'operador')->get();
+        $isActive = SystemSetting::isTurnGenerationActive();
         $areas = [
             'Ventanilla A',
             'Ventanilla B',
@@ -59,12 +61,17 @@ class RegisterEmployeeController extends Controller
             'Asesor 4',
         ];
 
-        return view('admin.register-employee', compact('empleados', 'areas'));
+        return view('admin.register-employee', compact('empleados', 'areas', 'isActive'));
     }
 
     // Eliminar empleado
     public function destroy($id)
     {
+        if (SystemSetting::isTurnGenerationActive()) {
+            return redirect()->route('admin.register-employee')
+                ->with('error', 'No se puede eliminar empleados mientras la generación de turnos está activa.');
+        }
+
         $user = User::findOrFail($id);
         $user->delete();
 

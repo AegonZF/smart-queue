@@ -1,5 +1,7 @@
 # Script para compartir SmartQueue con Herd Share
 
+$SiteDomain = "smartqueue.test"
+
 Write-Host "=== Preparando SmartQueue para compartir ===" -ForegroundColor Cyan
 
 # 1. Detener npm run dev si está corriendo
@@ -12,6 +14,8 @@ Write-Host "2. Eliminando archivo hot..." -ForegroundColor Yellow
 if (Test-Path "public/hot") {
     Remove-Item "public/hot" -Force
     Write-Host "   ✓ Archivo hot eliminado" -ForegroundColor Green
+} else {
+    Write-Host "   ✓ No existe archivo hot" -ForegroundColor Green
 }
 
 # 3. Verificar que los assets estén compilados
@@ -19,15 +23,18 @@ Write-Host "3. Verificando assets compilados..." -ForegroundColor Yellow
 if (!(Test-Path "public/build/manifest.json")) {
     Write-Host "   Compilando assets..." -ForegroundColor Yellow
     npm run build
+} else {
+    Write-Host "   ✓ Assets ya compilados" -ForegroundColor Green
 }
 
 # 4. Limpiar cachés
 Write-Host "4. Limpiando cachés..." -ForegroundColor Yellow
 php artisan optimize:clear | Out-Null
+Write-Host "   ✓ Cachés limpiados" -ForegroundColor Green
 
 # 5. Iniciar herd share
-Write-Host "`n5. Iniciando Herd Share..." -ForegroundColor Yellow
+Write-Host "`n5. Iniciando Herd Share para $SiteDomain ..." -ForegroundColor Yellow
 Write-Host "   IMPORTANTE: Copia la URL pública que aparecerá" -ForegroundColor Cyan
 Write-Host "   y actualiza APP_URL y ASSET_URL en el archivo .env`n" -ForegroundColor Cyan
 
-herd share
+herd share $SiteDomain
